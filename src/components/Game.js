@@ -27,15 +27,15 @@ function Game() {
         else if (key === 39) { key = (dir.current.current === 37) ? 37 : 39 }
         else if (key === 38) { key = (dir.current.current === 40) ? 40 : 38 }
         else if (key === 40) { key = (dir.current.current === 38) ? 38 : 40 }
-        else{
-            if(dir.current.next > 36 && dir.current.next < 41){
+        else {
+            if (dir.current.next > 36 && dir.current.next < 41) {
                 dir.current.current = dir.current.next
                 dir.current.next = key
-            }else{
+            } else {
                 dir.current.next = dir.current.current
                 dir.current.current = key
             }
-            
+
             return
         }
         // edit this to stop at random key
@@ -114,13 +114,13 @@ function Game() {
     }, [time])
 
     return (
-        <div ref={sizeContainer} className="flex h-full items-center justify-center">
+        <div ref={sizeContainer} className="flex h-full  items-center justify-center">
 
-            <div ref={focusContainer} tabIndex={-1} className="bg-neutral-200 relative outline-none" style={{ width: size.x, height: size.y }}>
+            <div ref={focusContainer} tabIndex={-1} className="bg-custom-900 relative outline-none" style={{ width: size.x, height: size.y }}>
                 {/* <div className="flex flex-wrap"> */}
                 <Food position={food}></Food>
                 <Snake positions={snake}></Snake>
-                <div zindex={50} className="bg-transparent border absolute border-rose-500" style={{ width: size.x, height: size.y, top: 0, left: 0 }}></div>
+                <div zindex={2} className="bg-transparent border absolute border-blue-500" style={{ width: size.x, height: size.y, top: 0, left: 0 }}></div>
 
                 {/* {arena.map((row, y) => {
                     return row.map((col, x) => { let id = 10 * y + x; return <Block value={col} d={size.divisor} id={id} key={id}></Block> }) })
@@ -146,7 +146,7 @@ const Food = ({ position }) => {
     // type of food?
     return (
         <>
-            {(position.x === -1) ? <></> : <div zindex={-1} className="outline-none bg-blue-700 relative" style={{ width: d, height: d, top: position.y * d, left: position.x * d }}></div>}
+            {(position.x === -1) ? <></> : <div zindex={-1} className="outline-none bg-red-700 relative" style={{ width: d, height: d, top: position.y * d, left: position.x * d }}></div>}
         </>
     )
 }
@@ -155,7 +155,7 @@ const Snake = ({ positions }) => {
     return (
         <>
             {positions.map((pos, i) => {
-                return <div zindex={3} /*tabIndex={3}*/ key={i} className="outline-none bg-gray-800 absolute" style={{ width: d, height: d, top: pos.y * d, left: pos.x * d }}></div>
+                return <div zindex={3} /*tabIndex={3}*/ key={i} className="outline-none bg-green-600 absolute" style={{ width: d, height: d, top: pos.y * d, left: pos.x * d }}></div>
             })}
         </>
     )

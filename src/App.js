@@ -16,8 +16,10 @@ function App() {
 
     return (
         <>
-            <Navbar></Navbar>
+
             <Game></Game>
+            <Navbar></Navbar>
+
         </>
     );
 
