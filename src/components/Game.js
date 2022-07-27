@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
+import Pause from "./Pause"
 const sx = 720
 const sy = 520
 const d = 40
 const speed = 90
-// const arrlen = s/d
 
 function Game() {
 
@@ -29,9 +29,11 @@ function Game() {
         else if (key === 40) { key = (dir.current.current === 38) ? 38 : 40 }
         else {
             if (dir.current.next > 36 && dir.current.next < 41) {
+                //pause
                 dir.current.current = dir.current.next
-                dir.current.next = key
+                dir.current.next = 0
             } else {
+                //unpause, press any key
                 dir.current.next = dir.current.current
                 dir.current.current = key
             }
@@ -118,8 +120,13 @@ function Game() {
 
             <div ref={focusContainer} tabIndex={-1} className="bg-custom-900 relative outline-none" style={{ width: size.x, height: size.y }}>
                 {/* <div className="flex flex-wrap"> */}
+
                 <Food position={food}></Food>
                 <Snake positions={snake}></Snake>
+                
+                { (!dir.current.next) &&  <Pause width={size.x} height={size.y}></Pause>}
+
+                {/* just the border */}
                 <div zindex={2} className="bg-transparent border absolute border-blue-500" style={{ width: size.x, height: size.y, top: 0, left: 0 }}></div>
 
                 {/* {arena.map((row, y) => {
@@ -131,16 +138,6 @@ function Game() {
 
     );
 }
-
-// const Block = memo(({value,d,id}) => {
-//     return (
-//         <div id={id} className="flex items-center justify-center bg-neutral-200 border border-slate-400" style={{ width: d, height: d }}>
-//             <div className={`h-3/4 w-3/4 ${value===0?"bg-neutral-100":"bg-blue-700"} rounded-sm drop-shadow-lg`}>
-//             </div>
-//         </div>
-//     );
-// })
-
 
 const Food = ({ position }) => {
     // type of food?
@@ -155,7 +152,7 @@ const Snake = ({ positions }) => {
     return (
         <>
             {positions.map((pos, i) => {
-                return <div zindex={3} /*tabIndex={3}*/ key={i} className="outline-none bg-green-600 absolute" style={{ width: d, height: d, top: pos.y * d, left: pos.x * d }}></div>
+                return <div zindex={1} /*tabIndex={3}*/ key={i} className="outline-none bg-green-600 absolute" style={{ width: d, height: d, top: pos.y * d, left: pos.x * d }}></div>
             })}
         </>
     )
