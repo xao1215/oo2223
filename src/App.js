@@ -8,6 +8,7 @@ function App() {
     return (
         <>
             <Game></Game>
+            {/* tetris, game of life, weather */}
             <Navbar></Navbar>
         </>
     );

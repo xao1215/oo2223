@@ -1,20 +1,19 @@
+import { ScaleIcon } from '@heroicons/react/solid';
 import React, { useState, useEffect, useRef } from 'react';
 import Pause from "./Pause"
-const sx = 720
-const sy = 520
-const d = 40
-const speed = 90
+const sx = 735
+const sy = 490
+const d = 35
+const speed = 20
 
 function Game() {
 
-    // const [arena, setArena] = useState(Array((s/d)).fill(0).map(row => { return Array(s/d).fill(0) }))
     const [size, setSize] = useState({ x: sx, y: sy, divisor: d })
 
     const [snake, setSnake] = useState([{ x: 0, y: 0 }])
-    const dir = useRef({ current: 1, next: 1 })
+    const dir = useRef({ current: 0, next: 0 })
 
     const [food, setFood] = useState({ x: -1, y: -1 })
-    // const [valid, setValid] = useState( [...Array((s/d)*(s/d)).keys()] )
 
 
     const [time, setTime] = useState(0)
@@ -52,21 +51,16 @@ function Game() {
             y = Math.floor(Math.random() * sy / d)
             x = Math.floor(Math.random() * sx / d)
         }
-        // console.log(valid.filter( num => num > -1 ))
-        setFood({ x: x, y: y })
+        setFood({ x: 0, y: 0 })
+        // setFood({ x: x, y: y })
+
     }
 
     useEffect(() => {
-        //every time position changes, update arena
-        // setArena(arena => [...arena].map( (row,i) => row.map( (element,j) => {
-        //     console.log(i,j)
-        //     return 0;
-        // })))
         const newY = Math.floor(Math.random() * sy / d)
         const newX = Math.floor(Math.random() * sx / d)
 
         setSnake([{ y: newY, x: newX }])
-        // setValid( valid => {valid[newY * 10 + newX] = -1; return valid})
         generateFood()
 
         document.addEventListener("keydown", handleKeyDown)
@@ -80,7 +74,6 @@ function Game() {
 
     useEffect(() => {
         let newPos = { ...snake[snake.length - 1] }
-
         switch (dir.current.next) {
             case 37: newPos.x = (newPos.x - 1 < 0) ? (sx / d - 1) : (newPos.x - 1); break; //left
             case 39: newPos.x = (newPos.x + 1 > sx / d - 1) ? (0) : (newPos.x + 1); break; //right
@@ -90,50 +83,49 @@ function Game() {
         }
         dir.current.current = dir.current.next
         let posArray = [...snake]
-        // let arenaCopy = [...arena]
         posArray.push(newPos)
-        // document.addEventListener(handleKeyDown)
         if (snake[snake.length - 1].x === food.x && snake[snake.length - 1].y === food.y) {
-            // setValid( valid => {valid[food.y * 10 + food.x] = -1; return valid})
             generateFood()
         } else {
-            // setValid( valid => {valid[snake[0].y * 10 + snake[0].x] = -1; return valid})
-
             posArray.shift()
-
         }
         setSnake(posArray)
 
         console.log(sizeContainer)
-        // generateFood()
-        // let newRows = Array((s/d)).fill(0).map(row => { return Array(s/d).fill(0) })
-        // position.forEach(element => newRows[element.y][element.x] = 1)
-
-        // setArena(newRows)
-        // setArena(arenaCopy)
-        // console.log(position)
-        // console.log(arena)
     }, [time])
 
     return (
-        <div ref={sizeContainer} className="flex h-full  items-center justify-center">
+        <div ref={sizeContainer} className="flex h-full  relative items-center justify-center">
 
-            <div ref={focusContainer} tabIndex={-1} className="bg-custom-900 relative outline-none" style={{ width: size.x, height: size.y }}>
-                {/* <div className="flex flex-wrap"> */}
+            {/*outline with gradient*/ }
+            <div tabIndex={-2} className="bg-gradient-to-tr from-blue-500 via-purple-600 to-red-600 absolute outline-none" style={{ width: size.x + 2, height: size.y + 2 }}>
+            </div>
+            
+
+            <div ref={focusContainer} tabIndex={-1} className="bg-custom-900 absolute outline-none" style={{ width: size.x, height: size.y }}>
+            <div style={{ width:sx, height:sy }} className="absolute flex flex-col ">
+                { (new Array(sy/d)).fill(0).map( (ting,i) => <div className={`${ (i===(sy/d)-1)?"":"border-b"} opacity-50 border-slate-700 relative t-30`} key={i} style={{ width: sx, height: d }}></div> ) }
+            </div>
+            <div style={{ width:sx, height:sy }} className="absolute flex flex-row ">
+                { (new Array(sx/d)).fill(0).map( (ting,i) => <div className={`${ (i===(sx/d)-1)?"":"border-r"} opacity-50 border-slate-700 relative t-30`} key={i} style={{ width: d, height: sy }}></div> ) }
+            </div>
 
                 <Food position={food}></Food>
                 <Snake positions={snake}></Snake>
-                
-                { (!dir.current.next) &&  <Pause width={size.x} height={size.y}></Pause>}
+
+                {(!dir.current.next) && <Pause width={size.x} height={size.y}></Pause>}
 
                 {/* just the border */}
-                <div zindex={2} className="bg-transparent border absolute border-blue-500" style={{ width: size.x, height: size.y, top: 0, left: 0 }}></div>
+                {/* <div zindex={2} className="bg-transparent border absolute border-blue-500" style={{ width: size.x, height: size.y, top: 0, left: 0 }}></div> */}
 
                 {/* {arena.map((row, y) => {
                     return row.map((col, x) => { let id = 10 * y + x; return <Block value={col} d={size.divisor} id={id} key={id}></Block> }) })
                 } */}
                 {/* </div> */}
             </div>
+
+            
+
         </div>
 
     );
@@ -152,7 +144,7 @@ const Snake = ({ positions }) => {
     return (
         <>
             {positions.map((pos, i) => {
-                return <div zindex={1} /*tabIndex={3}*/ key={i} className="outline-none bg-green-600 absolute" style={{ width: d, height: d, top: pos.y * d, left: pos.x * d }}></div>
+                return <div zindex={1} /*tabIndex={3}*/ key={i} className="snake outline-none bg-green-600 absolute" style={{ width: d, height: d, top: pos.y * d, left: pos.x * d }}></div>
             })}
         </>
     )
