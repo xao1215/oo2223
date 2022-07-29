@@ -7,9 +7,10 @@ function App() {
 
     return (
         <>
+            <Navbar></Navbar>
+
             <Game></Game>
             {/* tetris, game of life, weather */}
-            <Navbar></Navbar>
         </>
     );
 

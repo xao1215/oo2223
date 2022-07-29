@@ -8,7 +8,7 @@ function classNames(...classes) {
 
 export default function Dropdown() {
     return (
-        <Menu as="div" className="relative lg:hidden md:hidden sm:block text-left">
+        <Menu as="div" className="relative block md:hidden text-left">
             <div>
                 <Menu.Button className="inline-flex justify-center w-full rounded-sm shadow-sm px-4 py-2  text-sm font-medium text-neutral-200 hover:text-neutral-50 hover:bg-custom-800 focus:outline-none">
                     <MenuIcon className="h-5 w-5" aria-hidden="true" />
