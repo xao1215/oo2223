@@ -1,24 +1,26 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Pause from "./Pause"
-const sx = 735
-const sy = 490
-const d = 35
-const speed = 75
+const sx = 750
+const sy = 500
+const d = 25
+const startingSpeed = 150
 
 function Game() {
-    const [size, setSize] = useState({ x: sx, y: sy, divisor: d })
-
+    console.log("render")
     const [snake, setSnake] = useState([{ x: 0, y: 0 }])
     const direction = useRef({ prev: 0, next: 0 })
 
+    const [size, setSize] = useState({ x: sx, y: sy, divisor: d })
+    const [game, setGame] = useState(0)
     const [food, setFood] = useState({ x: -1, y: -1 })
-
+    const speed = useRef(startingSpeed)
 
     const [time, setTime] = useState(0)
     const focusContainer = useRef(null)
     const sizeContainer = useRef(null)
 
     const handleKeyDown = (e) => {
+        setGame(1)
         let key = e.keyCode
         if (key === 37) { key = (direction.current.prev === 39) ? 39 : 37 }
         else if (key === 39) { key = (direction.current.prev === 37) ? 37 : 39 }
@@ -41,6 +43,8 @@ function Game() {
         direction.current.next = key
     }
 
+
+
     const generateFood = () => {
         let y = Math.floor(Math.random() * sy / d)
         let x = Math.floor(Math.random() * sx / d)
@@ -50,7 +54,11 @@ function Game() {
         }
         // setFood({ x: 0, y: 0 })
         setFood({ x: x, y: y })
+    }
 
+    const run = () => {
+        setTime(time => time + 1)
+        setTimeout(run,speed.current)
     }
 
     useEffect(() => {
@@ -63,10 +71,15 @@ function Game() {
         document.addEventListener("keydown", handleKeyDown)
 
         focusContainer.current.focus()
-        const interval = setInterval(() => {
-            setTime(time => time + 1);
-        }, speed)
-        return () => { clearInterval(interval) }
+        // setTimeout(()=>{
+        //     console.log("nig")
+        //     setTime(time => time + 1)
+        // }, 1000 )
+        run()
+        // setInterval(() => {
+        //     setTime(time => time + 1);
+        //     setSpid(spid => spid - 10)
+        // }, speed)
     }, [])
 
     useEffect(() => {
@@ -79,24 +92,32 @@ function Game() {
             case 38: newPos.y = (newPos.y - 1 < 0) ? (sy / d - 1) : (newPos.y - 1); break; //up
             default: return;
         }
+
+        for(let i = 0; i < snake.length-3; i++){
+            if( snake[snake.length-1].x === snake[i].x && snake[snake.length-1].y === snake[i].y ){
+                speed.current = startingSpeed
+                setGame(snake.length-1)
+                direction.current.next = 0
+                direction.current.prev = 0
+                const newY = Math.floor(Math.random() * sy / d)
+                const newX = Math.floor(Math.random() * sx / d)
+                setSnake([{ y: newY, x: newX }])
+                generateFood()
+                return;
+            }
+        }
+
         direction.current.prev = direction.current.next
         let posArray = [...snake]
         posArray.push(newPos)
         if (snake[snake.length - 1].x === food.x && snake[snake.length - 1].y === food.y) {
             generateFood()
+            if(speed.current > 10){ speed.current = speed.current - 0.5 }
         } else {
             posArray.shift()
         }
-
         setSnake(posArray)
 
-        const x = snake[snake.length-1].x
-        const y = snake[snake.length-1].y
-        for(let i = 0; i < snake.length-3; i++){
-            if( x === snake[i].x && y === snake[i].y ){
-                direction.current.next = 0
-            }
-        }
 
     }, [time])
 
@@ -120,7 +141,7 @@ function Game() {
                         <Food position={food}></Food>
                         <Snake positions={snake}></Snake>
 
-                        {(!direction.current.next) && <Pause score={snake.length-1}></Pause>}
+                        {(!direction.current.next) && <Pause gameState={game} score={snake.length-1}></Pause>}
 
                         {/* just the border */}
                         {/* <div zindex={2} className="bg-transparent border absolute border-blue-500" style={{ width: size.x, height: size.y, top: 0, left: 0 }}></div> */}
