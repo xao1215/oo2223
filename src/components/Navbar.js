@@ -4,7 +4,7 @@ import { CubeIcon } from "@heroicons/react/solid"
 const Navbar = () => {
     return (
 
-        <nav style={{ zIndex: 3333 }} className="relative bg-white w-full border-b border-amber-500 px-8 py-2.5  dark:bg-custom-900">
+        <nav style={{ zIndex: 3333 }} className="relative bg-white w-full border-b border-amber-500 px-8 py-1  dark:bg-custom-900">
             <div className="flex flex-wrap justify-between items-center mx-auto">
 
                 <a href="https://flowbite.com/" className="flex items-center">

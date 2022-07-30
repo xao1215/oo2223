@@ -1,17 +1,15 @@
-import { ScaleIcon } from '@heroicons/react/solid';
 import React, { useState, useEffect, useRef } from 'react';
 import Pause from "./Pause"
 const sx = 735
 const sy = 490
 const d = 35
-const speed = 80
+const speed = 75
 
 function Game() {
-
     const [size, setSize] = useState({ x: sx, y: sy, divisor: d })
 
     const [snake, setSnake] = useState([{ x: 0, y: 0 }])
-    const dir = useRef({ current: 0, next: 0 })
+    const direction = useRef({ prev: 0, next: 0 })
 
     const [food, setFood] = useState({ x: -1, y: -1 })
 
@@ -22,26 +20,25 @@ function Game() {
 
     const handleKeyDown = (e) => {
         let key = e.keyCode
-        if (key === 37) { key = (dir.current.current === 39) ? 39 : 37 }
-        else if (key === 39) { key = (dir.current.current === 37) ? 37 : 39 }
-        else if (key === 38) { key = (dir.current.current === 40) ? 40 : 38 }
-        else if (key === 40) { key = (dir.current.current === 38) ? 38 : 40 }
+        if (key === 37) { key = (direction.current.prev === 39) ? 39 : 37 }
+        else if (key === 39) { key = (direction.current.prev === 37) ? 37 : 39 }
+        else if (key === 38) { key = (direction.current.prev === 40) ? 40 : 38 }
+        else if (key === 40) { key = (direction.current.prev === 38) ? 38 : 40 }
         else {
-            if (dir.current.next > 36 && dir.current.next < 41) {
+            if (direction.current.next > 36 && direction.current.next < 41) {
                 //pause
-                dir.current.current = dir.current.next
-                dir.current.next = 0
+                direction.current.prev = direction.current.next
+                direction.current.next = 0
             } else {
                 //unpause, press any key
-                dir.current.next = dir.current.current
-                dir.current.current = key
+                direction.current.next = direction.current.prev
+                direction.current.prev = key
             }
-
             return
         }
         // edit this to stop at random key
-        // dir.current.current = dir.current.next
-        dir.current.next = key
+        // direction.current.current = direction.current.next
+        direction.current.next = key
     }
 
     const generateFood = () => {
@@ -74,14 +71,15 @@ function Game() {
 
     useEffect(() => {
         let newPos = { ...snake[snake.length - 1] }
-        switch (dir.current.next) {
+
+        switch (direction.current.next) {
             case 37: newPos.x = (newPos.x - 1 < 0) ? (sx / d - 1) : (newPos.x - 1); break; //left
             case 39: newPos.x = (newPos.x + 1 > sx / d - 1) ? (0) : (newPos.x + 1); break; //right
             case 40: newPos.y = (newPos.y + 1 > sy / d - 1) ? (0) : (newPos.y + 1); break; //down
             case 38: newPos.y = (newPos.y - 1 < 0) ? (sy / d - 1) : (newPos.y - 1); break; //up
             default: return;
         }
-        dir.current.current = dir.current.next
+        direction.current.prev = direction.current.next
         let posArray = [...snake]
         posArray.push(newPos)
         if (snake[snake.length - 1].x === food.x && snake[snake.length - 1].y === food.y) {
@@ -89,13 +87,22 @@ function Game() {
         } else {
             posArray.shift()
         }
+
         setSnake(posArray)
+
+        const x = snake[snake.length-1].x
+        const y = snake[snake.length-1].y
+        for(let i = 0; i < snake.length-3; i++){
+            if( x === snake[i].x && y === snake[i].y ){
+                direction.current.next = 0
+            }
+        }
+
     }, [time])
 
     return (
         <>
-
-            <div className="h-full hidden flex-row ">
+            <div className="h-full flex-row ">
                 <div ref={sizeContainer} className="flex h-full relative items-center justify-center">
 
                     {/*outline with gradient*/}
@@ -113,7 +120,7 @@ function Game() {
                         <Food position={food}></Food>
                         <Snake positions={snake}></Snake>
 
-                        {(!dir.current.next) && <Pause width={size.x} height={size.y}></Pause>}
+                        {(!direction.current.next) && <Pause score={snake.length-1}></Pause>}
 
                         {/* just the border */}
                         {/* <div zindex={2} className="bg-transparent border absolute border-blue-500" style={{ width: size.x, height: size.y, top: 0, left: 0 }}></div> */}
@@ -123,11 +130,10 @@ function Game() {
             </div>
 
 
-            <div className="flex flex-grow flex-row  justify-ceter items-center">
+            {/* <div className="flex flex-grow flex-row  justify-ceter items-center">
                 <div className=" grow items-center flex justify-center ">
                     <div ref={sizeContainer} className="flex h-full relative items-center justify-center">
 
-                        {/*outline with gradient*/}
                         <div tabIndex={-2} className="bg-gradient-to-tr  from-blue-500 via-purple-600 to-red-600 absolute outline-none" style={{ width: size.x + 5, height: size.y + 5 }}>
                         </div>
 
@@ -142,29 +148,27 @@ function Game() {
                             <Food position={food}></Food>
                             <Snake positions={snake}></Snake>
 
-                            {(!dir.current.next) && <Pause width={size.x} height={size.y}></Pause>}
+                            {(!direction.current.next) && <Pause width={size.x} height={size.y}></Pause>}
 
-                            {/* just the border */}
-                            {/* <div zindex={2} className="bg-transparent border absolute border-blue-500" style={{ width: size.x, height: size.y, top: 0, left: 0 }}></div> */}
                         </div>
 
                     </div></div>
                 <div className=" items-center flex justify-center "><p className="px-8">efojweoifijwefjwiojefoiwjfeoijfowjfjoiwejfi</p></div>
 
-            </div>
+            </div> */}
         </>
 
     );
 }
 
-const Food = ({ position }) => {
+const Food = React.memo(({ position }) => {
     // type of food?
     return (
         <>
-            {(position.x === -1) ? <></> : <div className="outline-none border-r border-l border-t border-b border-blue-500 bg-red-700 relative" style={{ width: d, height: d, top: position.y * d, left: position.x * d }}></div>}
+            {(position.x === -1) ? <></> : <div className="outline-none bg-red-800 relative" style={{ width: d, height: d, top: position.y * d, left: position.x * d }}></div>}
         </>
     )
-}
+})
 
 const Snake = ({ positions }) => {
     return (
