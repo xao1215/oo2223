@@ -4,7 +4,7 @@ import { CubeIcon } from "@heroicons/react/solid"
 const Navbar = () => {
     return (
 
-        <nav style={{ zIndex: 3333 }} className="relative h-20 flex justify-end sm:grid sm:grid-cols-6  bg-white w-full border-b border-amber-500 px-8   dark:bg-custom-900">
+        <nav style={{ zIndex: 3333 }} className="relative h-20 flex justify-end sm:grid sm:grid-cols-6  bg-white w-full border-b border-purple-600 px-8   dark:bg-custom-900">
 
             <div className="self-center"></div>
 
@@ -14,7 +14,7 @@ const Navbar = () => {
                         <a href="/" className="block pr-5 border-r border-gray-600 text-blue-500 hover:text-blue-700" aria-current="page">Snake</a>
                     </li>
                     <li className="self-center">
-                        <a href="/" className="block px-5 border-r border-gray-600 text-gray-400 hover:text-gray-100  ">Game Of LIfe</a>
+                        <a href="/gameoflife" className="block px-5 border-r border-gray-600 text-gray-400 hover:text-gray-100  ">Game Of LIfe</a>
                     </li>
                     {/* <li>
                             <div className="relative inline-block">

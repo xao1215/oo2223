@@ -60,6 +60,7 @@ function Game() {
     const run = () => {
         setTime(time => time + 1)
         setTimeout(run, speed.current)
+        console.log(snake,game)
     }
 
     useEffect(() => {
@@ -113,7 +114,7 @@ function Game() {
         posArray.push(newPos)
         if (snake[snake.length - 1].x === food.x && snake[snake.length - 1].y === food.y) {
             generateFood()
-            if (speed.current > 10) { speed.current = speed.current - 0.75 }
+            if (speed.current > 20) { speed.current = speed.current - 0.8 }
         } else {
             posArray.shift()
         }
@@ -123,15 +124,10 @@ function Game() {
     }, [time])
 
     return (
-        <>
-            {/* <div className="flex h-full"> lowefl </div>
-            <div className="flex h-full"> lowefl </div>
-            <div className="flex h-full"> lowefl </div> */}
-            
             <div ref={sizeContainer} className="flex h-full w-full relative items-center justify-center">
 
                 {/*outline with gradient*/}
-                <div tabIndex={-2} className="bg-gradient-to-tr  from-blue-500 via-purple-600 to-red-600 absolute outline-none" style={{ width: size.x + 5, height: size.y + 5 }}>
+                <div className="bg-gradient-to-tr  from-blue-500 via-purple-600 to-red-600 absolute outline-none" style={{ width: size.x + 5, height: size.y + 5 }}>
                 </div>
 
                 <div ref={focusContainer} tabIndex={-1} className="bg-custom-900 absolute outline-none" style={{ width: size.x, height: size.y }}>
@@ -152,8 +148,6 @@ function Game() {
                 </div>
 
             </div>
-
-        </>
 
     );
 }

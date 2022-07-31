@@ -1,7 +1,9 @@
 import './App.css';
 import React from 'react';
-import Game from './components/Game'
+import Snake from './components/Snake'
+import GameOfLife from './components/GameOfLife'
 import Navbar from './components/Navbar'
+import { BrowserRouter, Routes, Route } from "react-router-dom"
 
 function App() {
 
@@ -9,8 +11,15 @@ function App() {
         <>
             <Navbar></Navbar>
 
-            <Game></Game>
-            {/* tetris, game of life, weather */}
+            <BrowserRouter>
+                <Routes>
+                    <Route element={<><Snake/></>} path="/"/>
+                    <Route element={<><GameOfLife/></>} path="/gameoflife"/>
+
+                    {/* tetris, game of life, weather */}
+                </Routes>
+            </BrowserRouter>
+        
         </>
     );
 
