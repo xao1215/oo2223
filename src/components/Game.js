@@ -3,7 +3,7 @@ import Pause from "./Pause"
 const sx = 750
 const sy = 500
 const d = 25
-const startingSpeed = 150
+const startingSpeed = 125
 
 function Game() {
     console.log("render")
@@ -20,7 +20,6 @@ function Game() {
     const sizeContainer = useRef(null)
 
     const handleKeyDown = (e) => {
-        setGame(1)
         let key = e.keyCode
         if (key === 37) { key = (direction.current.prev === 39) ? 39 : 37 }
         else if (key === 39) { key = (direction.current.prev === 37) ? 37 : 39 }
@@ -41,6 +40,8 @@ function Game() {
         // edit this to stop at random key
         // direction.current.current = direction.current.next
         direction.current.next = key
+        setGame(1)
+
     }
 
 
@@ -58,7 +59,7 @@ function Game() {
 
     const run = () => {
         setTime(time => time + 1)
-        setTimeout(run,speed.current)
+        setTimeout(run, speed.current)
     }
 
     useEffect(() => {
@@ -93,10 +94,10 @@ function Game() {
             default: return;
         }
 
-        for(let i = 0; i < snake.length-3; i++){
-            if( snake[snake.length-1].x === snake[i].x && snake[snake.length-1].y === snake[i].y ){
+        for (let i = 0; i < snake.length - 3; i++) {
+            if (snake[snake.length - 1].x === snake[i].x && snake[snake.length - 1].y === snake[i].y) {
                 speed.current = startingSpeed
-                setGame(snake.length-1)
+                setGame(snake.length - 1)
                 direction.current.next = 0
                 direction.current.prev = 0
                 const newY = Math.floor(Math.random() * sy / d)
@@ -112,7 +113,7 @@ function Game() {
         posArray.push(newPos)
         if (snake[snake.length - 1].x === food.x && snake[snake.length - 1].y === food.y) {
             generateFood()
-            if(speed.current > 10){ speed.current = speed.current - 0.5 }
+            if (speed.current > 10) { speed.current = speed.current - 0.75 }
         } else {
             posArray.shift()
         }
@@ -123,60 +124,35 @@ function Game() {
 
     return (
         <>
-            <div className="h-full flex-row ">
-                <div ref={sizeContainer} className="flex h-full relative items-center justify-center">
+            {/* <div className="flex h-full"> lowefl </div>
+            <div className="flex h-full"> lowefl </div>
+            <div className="flex h-full"> lowefl </div> */}
+            
+            <div ref={sizeContainer} className="flex h-full w-full relative items-center justify-center">
 
-                    {/*outline with gradient*/}
-                    <div tabIndex={-2} className="bg-gradient-to-tr  from-blue-500 via-purple-600 to-red-600 absolute outline-none" style={{ width: size.x + 5, height: size.y + 5 }}>
-                    </div>
-
-                    <div ref={focusContainer} tabIndex={-1} className="bg-custom-900 absolute outline-none" style={{ width: size.x, height: size.y }}>
-                        <div style={{ width: sx, height: sy }} className="absolute flex flex-col ">
-                            {(new Array(sy / d)).fill(0).map((ting, i) => <div className={`${(i === (sy / d) - 1) ? "" : "border-b"} opacity-50 border-slate-700 relative t-30`} key={i} style={{ width: sx, height: d }}></div>)}
-                        </div>
-                        <div style={{ width: sx, height: sy }} className="absolute flex flex-row ">
-                            {(new Array(sx / d)).fill(0).map((ting, i) => <div className={`${(i === (sx / d) - 1) ? "" : "border-r"} opacity-50 border-slate-700 relative t-30`} key={i} style={{ width: d, height: sy }}></div>)}
-                        </div>
-
-                        <Food position={food}></Food>
-                        <Snake positions={snake}></Snake>
-
-                        {(!direction.current.next) && <Pause gameState={game} score={snake.length-1}></Pause>}
-
-                        {/* just the border */}
-                        {/* <div zindex={2} className="bg-transparent border absolute border-blue-500" style={{ width: size.x, height: size.y, top: 0, left: 0 }}></div> */}
-                    </div>
-
+                {/*outline with gradient*/}
+                <div tabIndex={-2} className="bg-gradient-to-tr  from-blue-500 via-purple-600 to-red-600 absolute outline-none" style={{ width: size.x + 5, height: size.y + 5 }}>
                 </div>
+
+                <div ref={focusContainer} tabIndex={-1} className="bg-custom-900 absolute outline-none" style={{ width: size.x, height: size.y }}>
+                    <div style={{ width: sx, height: sy }} className="absolute flex flex-col ">
+                        {(new Array(sy / d)).fill(0).map((ting, i) => <div className={`${(i === (sy / d) - 1) ? "" : "border-b"} opacity-50 border-slate-700 relative t-30`} key={i} style={{ width: sx, height: d }}></div>)}
+                    </div>
+                    <div style={{ width: sx, height: sy }} className="absolute flex flex-row ">
+                        {(new Array(sx / d)).fill(0).map((ting, i) => <div className={`${(i === (sx / d) - 1) ? "" : "border-r"} opacity-50 border-slate-700 relative t-30`} key={i} style={{ width: d, height: sy }}></div>)}
+                    </div>
+
+                    <Food position={food}></Food>
+                    <Snake positions={snake}></Snake>
+
+                    {(!direction.current.next) && <Pause gameState={game} score={snake.length - 1}></Pause>}
+
+                    {/* just the border */}
+                    {/* <div zindex={2} className="bg-transparent border absolute border-blue-500" style={{ width: size.x, height: size.y, top: 0, left: 0 }}></div> */}
+                </div>
+
             </div>
 
-
-            {/* <div className="flex flex-grow flex-row  justify-ceter items-center">
-                <div className=" grow items-center flex justify-center ">
-                    <div ref={sizeContainer} className="flex h-full relative items-center justify-center">
-
-                        <div tabIndex={-2} className="bg-gradient-to-tr  from-blue-500 via-purple-600 to-red-600 absolute outline-none" style={{ width: size.x + 5, height: size.y + 5 }}>
-                        </div>
-
-                        <div ref={focusContainer} tabIndex={-1} className="bg-custom-900 absolute outline-none" style={{ width: size.x, height: size.y }}>
-                            <div style={{ width: sx, height: sy }} className="absolute flex flex-col ">
-                                {(new Array(sy / d)).fill(0).map((ting, i) => <div className={`${(i === (sy / d) - 1) ? "" : "border-b"} opacity-50 border-slate-700 relative t-30`} key={i} style={{ width: sx, height: d }}></div>)}
-                            </div>
-                            <div style={{ width: sx, height: sy }} className="absolute flex flex-row ">
-                                {(new Array(sx / d)).fill(0).map((ting, i) => <div className={`${(i === (sx / d) - 1) ? "" : "border-r"} opacity-50 border-slate-700 relative t-30`} key={i} style={{ width: d, height: sy }}></div>)}
-                            </div>
-
-                            <Food position={food}></Food>
-                            <Snake positions={snake}></Snake>
-
-                            {(!direction.current.next) && <Pause width={size.x} height={size.y}></Pause>}
-
-                        </div>
-
-                    </div></div>
-                <div className=" items-center flex justify-center "><p className="px-8">efojweoifijwefjwiojefoiwjfeoijfowjfjoiwejfi</p></div>
-
-            </div> */}
         </>
 
     );
