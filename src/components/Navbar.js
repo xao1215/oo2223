@@ -4,7 +4,7 @@ import { CubeIcon } from "@heroicons/react/solid"
 const Navbar = () => {
     return (
 
-        <nav style={{ zIndex: 3333 }} className="relative h-20 flex justify-end sm:grid sm:grid-cols-6  bg-white w-full border-b border-purple-600 px-8   dark:bg-custom-900">
+        <nav style={{ zIndex: 3333 }} className="relative flex justify-end sm:grid sm:grid-cols-6  bg-white w-full border-b border-purple-600 px-8 py-3   dark:bg-custom-900">
 
             <div className="self-center"></div>
 

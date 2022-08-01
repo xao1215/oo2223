@@ -60,7 +60,7 @@ function Game() {
     const run = () => {
         setTime(time => time + 1)
         setTimeout(run, speed.current)
-        console.log(snake,game)
+        console.log(snake, game)
     }
 
     useEffect(() => {
@@ -124,13 +124,11 @@ function Game() {
     }, [time])
 
     return (
-            <div ref={sizeContainer} className="flex h-full w-full relative items-center justify-center">
+        <div ref={sizeContainer} className="flex h-full w-full relative items-center justify-center">
 
-                {/*outline with gradient*/}
-                <div className="bg-gradient-to-tr  from-blue-500 via-purple-600 to-red-600 absolute outline-none" style={{ width: size.x + 5, height: size.y + 5 }}>
-                </div>
-
-                <div ref={focusContainer} tabIndex={-1} className="bg-custom-900 absolute outline-none" style={{ width: size.x, height: size.y }}>
+            {/*outline with gradient*/}
+            <div className="bg-gradient-to-tr  from-blue-500 via-purple-600 to-red-600 flex justify-center items-center relative outline-none" style={{ width: size.x + 5, height: size.y + 5 }}>
+                <div ref={focusContainer} tabIndex={-1} className="bg-custom-900 relative outline-none" style={{ width: size.x, height: size.y }}>
                     <div style={{ width: sx, height: sy }} className="absolute flex flex-col ">
                         {(new Array(sy / d)).fill(0).map((ting, i) => <div className={`${(i === (sy / d) - 1) ? "" : "border-b"} opacity-50 border-slate-700 relative t-30`} key={i} style={{ width: sx, height: d }}></div>)}
                     </div>
@@ -149,6 +147,9 @@ function Game() {
 
             </div>
 
+
+        </div>
+
     );
 }
 
@@ -156,7 +157,7 @@ const Food = React.memo(({ position }) => {
     // type of food?
     return (
         <>
-            {(position.x === -1) ? <></> : <div className="outline-none bg-red-800 relative" style={{ width: d, height: d, top: position.y * d, left: position.x * d }}></div>}
+            {(position.x === -1) ? <></> : <div className="outline-none bg-red-800 absolute" style={{ width: d, height: d, top: position.y * d, left: position.x * d }}></div>}
         </>
     )
 })
