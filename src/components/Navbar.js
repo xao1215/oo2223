@@ -8,8 +8,8 @@ const Navbar = () => {
 
             <div className="self-center"></div>
 
-            <div className="content-center col-span-4  justify-center  hidden sm:flex" id="navbar-default">
-                <ul className="flex   bg-gray-50 flex-row   mt-0 text-md   dark:bg-custom-900 ">
+            <div className="content-center col-span-4 justify-center hidden sm:flex" id="navbar-default">
+                <ul className="flex bg-gray-50 flex-row mt-0 text-md dark:bg-custom-900 ">
                     <li className="self-center">
                         <a href="/" className="block pr-5 border-r border-gray-600 text-blue-500 hover:text-blue-700" aria-current="page">Snake</a>
                     </li>
@@ -26,7 +26,7 @@ const Navbar = () => {
                             <a href="/" className="inline-block px-5 border-r border-gray-600 text-gray-400 hover:text-gray-100  ">About</a>
                         </li> */}
                     <li className="self-center">
-                        <a href="/" className="block pl-5 text-gray-400 hover:text-gray-100  ">Tetris</a>
+                        <a href="/tetris" className="block pl-5 text-gray-400 hover:text-gray-100  ">Tetris</a>
                     </li>
                 </ul>
             </div>

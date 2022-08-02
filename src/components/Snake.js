@@ -1,14 +1,16 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Pause from "./Pause"
 const sx = 750
 const sy = 500
 const d = 25
-const startingSpeed = 125
+const startingSpeed = 100
+
+// change so that on input => start a recursive function
 
 function Game() {
     console.log("render")
     const [snake, setSnake] = useState([{ x: 0, y: 0 }])
-    const direction = useRef({ prev: 0, next: 0 })
+    const direction = useRef({ prev: 0, next: -1 })
 
     const [size, setSize] = useState({ x: sx, y: sy, divisor: d })
     const [game, setGame] = useState(0)
@@ -40,12 +42,13 @@ function Game() {
         // edit this to stop at random key
         // direction.current.current = direction.current.next
         direction.current.next = key
-        setGame(1)
-
+        if(direction.current.next === -1){setGame(1)}
+        kek()
     }
 
-
-
+    const kek = () => {
+        
+    }
     const generateFood = () => {
         let y = Math.floor(Math.random() * sy / d)
         let x = Math.floor(Math.random() * sx / d)
@@ -57,10 +60,9 @@ function Game() {
         setFood({ x: x, y: y })
     }
 
-    const run = () => {
+    const run = ()  => {
         setTime(time => time + 1)
         setTimeout(run, speed.current)
-        console.log(snake, game)
     }
 
     useEffect(() => {
@@ -73,15 +75,8 @@ function Game() {
         document.addEventListener("keydown", handleKeyDown)
 
         focusContainer.current.focus()
-        // setTimeout(()=>{
-        //     console.log("nig")
-        //     setTime(time => time + 1)
-        // }, 1000 )
+
         run()
-        // setInterval(() => {
-        //     setTime(time => time + 1);
-        //     setSpid(spid => spid - 10)
-        // }, speed)
     }, [])
 
     useEffect(() => {
@@ -139,7 +134,7 @@ function Game() {
                     <Food position={food}></Food>
                     <Snake positions={snake}></Snake>
 
-                    {(!direction.current.next) && <Pause gameState={game} score={snake.length - 1}></Pause>}
+                    {(0 >= direction.current.next) && <Pause gameState={game} score={snake.length - 1}></Pause>}
 
                     {/* just the border */}
                     {/* <div zindex={2} className="bg-transparent border absolute border-blue-500" style={{ width: size.x, height: size.y, top: 0, left: 0 }}></div> */}
