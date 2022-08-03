@@ -10,7 +10,7 @@ export default function Dropdown() {
     return (
         <Menu as="div" className="relative self-center block sm:hidden text-left">
             <div>
-                <Menu.Button className="flex rounded-sm shadow-sm px-1 py-1  text-sm font-medium text-neutral-200 hover:text-neutral-50 hover:bg-custom-800 focus:outline-none">
+                <Menu.Button className="flex rounded-sm shadow-sm px-1 py-6  text-sm font-medium text-neutral-200 hover:text-neutral-50 hover:bg-custom-800 focus:outline-none">
                     <MenuIcon className="h-4 w-4" aria-hidden="true" />
                 </Menu.Button>
             </div>

@@ -19,7 +19,6 @@ function Game() {
 
     const [time, setTime] = useState(0)
     const focusContainer = useRef(null)
-    const sizeContainer = useRef(null)
 
     const handleKeyDown = (e) => {
         let key = e.keyCode
@@ -119,7 +118,7 @@ function Game() {
     }, [time])
 
     return (
-        <div ref={sizeContainer} className="flex h-full w-full relative items-center justify-center">
+        <div className="flex h-full w-full relative items-center justify-center">
 
             {/*outline with gradient*/}
             <div className="bg-gradient-to-tr  from-blue-500 via-purple-600 to-red-600 flex justify-center items-center relative outline-none" style={{ width: size.x + 5, height: size.y + 5 }}>
@@ -141,7 +140,6 @@ function Game() {
                 </div>
 
             </div>
-
 
         </div>
 

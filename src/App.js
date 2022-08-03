@@ -10,13 +10,13 @@ function App() {
 
     return (
         <>
-            <Navbar></Navbar>
 
             <BrowserRouter>
                 <Routes>
-                    <Route element={<><Snake/></>} path="/"/>
-                    <Route element={<><GameOfLife/></>} path="/gameoflife"/>
-                    <Route element={<><Tetris/></>} path="/tetris"/>
+
+                    <Route element={<><Navbar/><Snake/></>} path="/"/>
+                    <Route element={<><Navbar/><GameOfLife/></>} path="/gameoflife"/>
+                    <Route element={<><Navbar/><Tetris/></>} path="/tetris"/>
 
                     {/* tetris, game of life, weather */}
                 </Routes>
