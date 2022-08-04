@@ -1,6 +1,8 @@
 import Dropdown from './Dropdown'
 import { NavLink, useLocation } from 'react-router-dom'
-import { CubeIcon } from "@heroicons/react/solid"
+import { Transition } from '@headlessui/react'
+
+// import { CubeIcon } from "@heroicons/react/solid"
 
 const Navbar = () => {
     return (
@@ -13,18 +15,25 @@ const Navbar = () => {
                 <ul className="flex bg-gray-50 flex-row mt-0 text-md dark:bg-custom-900 ">
                     <li className="self-center ">
 
-                        <NavLink to="/" style={{fontFamily:"Bebas Neue" }} className={`block  text-2xl tracking-wider px-8 border-r pt-5 pb-4 border-gray-600 ${(useLocation().pathname === "/") ? "text-blue-500" : "text-red-500"} hover:text-blue-700`} aria-current="page">Snake</NavLink>
+                        <NavLink to="/" style={{ fontFamily: "Bebas Neue" }} className={`block   tracking-wider border-r border-gray-600 ${(useLocation().pathname === "/") ? "text-amber-500" : "text-gray-400"} hover:text-amber-500`}>
+                            <p className="px-8 pt-5 pb-4 transition duration-700 ease-in-out text-2xl hover:bg-opacity-25   hover:scale-125 ">Snake</p>
+                        </NavLink>
 
                     </li>
                     <li className="self-center">
 
-                        <NavLink to="/gameoflife" style={{fontFamily:"Bebas Neue" }} className="block px-8 pt-5 pb-4 text-2xl tracking-wider border-r border-gray-600 text-gray-400 hover:text-gray-100  ">Game Of LIfe</NavLink>
+                        <NavLink to="/gameoflife" style={{ fontFamily: "Bebas Neue" }} className={`block   tracking-wider border-r border-gray-600 ${(useLocation().pathname === "/gameoflife") ? "text-lime-500" : "text-gray-400"} hover:text-lime-500`}>
+                            <div className="px-8 pt-5 pb-4  transition duration-700 text-2xl  ease-in-out hover:scale-125 ">Game Of Life</div>
+                        </NavLink>
 
                     </li>
                     <li className="self-center">
 
-                        <NavLink to="/tetris" style={{fontFamily:"Bebas Neue" }} className="block text-2xl tracking-wider px-8 pt-5 pb-4 text-gray-400 hover:text-gray-100  ">Tetris</NavLink>
-                  
+                        <NavLink to="/tetris" style={{ fontFamily: "Bebas Neue" }} className={`block   tracking-wider border-r border-gray-600 ${(useLocation().pathname === "/tetris") ? "text-pink-600" : "text-gray-400"} hover:text-pink-600`}>
+                            <p className="px-8 pt-5 pb-4 transition duration-700 ease-in-out text-2xl hover:scale-125 ">Tetris?</p>
+
+                        </NavLink>
+
                     </li>
 
                     {/* <li>
