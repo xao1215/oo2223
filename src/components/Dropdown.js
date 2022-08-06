@@ -1,6 +1,8 @@
 import { Fragment } from 'react'
 import { Menu, Transition } from '@headlessui/react'
-import {  MenuIcon } from '@heroicons/react/solid'
+import { MenuIcon } from '@heroicons/react/solid'
+import { NavLink, useLocation } from 'react-router-dom'
+
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
@@ -9,9 +11,9 @@ function classNames(...classes) {
 export default function Dropdown() {
     return (
         <Menu as="div" className="relative self-center block sm:hidden text-left">
-            <div>
-                <Menu.Button className="flex rounded-sm shadow-sm px-1 py-6  text-sm font-medium text-neutral-200 hover:text-neutral-50 hover:bg-custom-800 focus:outline-none">
-                    <MenuIcon className="h-4 w-4" aria-hidden="true" />
+            <div className="py-3 px-3">
+                <Menu.Button className="flex rounded-sm shadow-sm px-3 py-3 text-sm font-medium text-neutral-200 hover:text-neutral-50 hover:bg-custom-800 focus:outline-none">
+                    <MenuIcon className="h-5 w-5" aria-hidden="true" />
                 </Menu.Button>
             </div>
 
@@ -24,48 +26,22 @@ export default function Dropdown() {
                 leaveFrom="transform opacity-100 scale-100"
                 leaveTo="transform opacity-0 scale-95"
             >
-                <Menu.Items className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
-                    <div className="py-1">
-                        <Menu.Item>
-                            {({ active }) => (
-                                <a 
-                                    href="#"
-                                    className={classNames(
-                                        active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                                        'block px-4 py-2 text-sm'
-                                    )}
-                                >
-                                    Account settings
-                                </a>
-                            )}
-                        </Menu.Item>
-                        <Menu.Item>
-                            {({ active }) => (
-                                <a
-                                    href="#"
-                                    className={classNames(
-                                        active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                                        'block px-4 py-2 text-sm'
-                                    )}
-                                >
-                                    Support
-                                </a>
-                            )}
-                        </Menu.Item>
-                        <Menu.Item>
-                            {({ active }) => (
-                                <a
-                                    href="#"
-                                    className={classNames(
-                                        active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                                        'block px-4 py-2 text-sm'
-                                    )}
-                                >
-                                    License
-                                </a>
-                            )}
-                        </Menu.Item>
-                        <form method="POST" action="#">
+                <Menu.Items className="origin-top-right absolute right-0  mt-0 w-56 rounded-md shadow-lg bg-custom-800 ring-1 ring-black ring-opacity-80 focus:outline-none">
+                    <div className="py-0">
+                        <NavLink to="/" className={`block rounded-t-md px-4 py-2 text-sm ${(useLocation().pathname === "/") ? "text-amber-500" : ("text-gray-500 hover:text-gray-100 hover:bg-custom-900")} `}>
+                            Snake
+                        </NavLink>
+
+                        <NavLink to="/gameoflife" className={`block px-4 py-2 text-sm ${(useLocation().pathname === "/gameoflife") ? "text-lime-500" : ("text-gray-500 hover:text-gray-100 hover:bg-custom-900")} `}>
+                            Game of Life
+                        </NavLink>
+
+                        <NavLink to="/tetris" className={`block rounded-b-md  px-4 py-2 text-sm ${(useLocation().pathname === "/tetris") ? "text-pink-500" : ("text-gray-500 hover:text-gray-100 hover:bg-custom-900")} `}>
+                            Tetris
+                        </NavLink>
+
+
+                        {/* <form method="POST" action="#">
                             <Menu.Item>
                                 {({ active }) => (
                                     <button
@@ -79,7 +55,7 @@ export default function Dropdown() {
                                     </button>
                                 )}
                             </Menu.Item>
-                        </form>
+                        </form> */}
                     </div>
                 </Menu.Items>
             </Transition>
