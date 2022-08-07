@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react"
 
-const pixelSize = 10
+const pixelSize = 20
+const speed = 200
+
 
 const GameOfLife = () => {
 
@@ -10,24 +12,32 @@ const GameOfLife = () => {
 
     const [size, setSize] = useState({ width: 0, height: 0 })
 
-    const [run, setRun] = useState(false)
+    // const [run, setRun] = useState(false)
+    const run = useRef(false)
+
     const [grid, setGrid] = useState(null)
 
     const lifeCycle = () => {
-        if (!run) return
+        if (!run.current) return
 
-
+        console.log("runnin")
+        
+        
 
         setTimeout(() => {
             lifeCycle()
-        }, 250)
+        }, speed)
+    }
+
+    const randomize = () => {
+        run.current = false
+        setGrid(Array(size.height/pixelSize).fill().map(_ => Array(size.width/pixelSize).fill().map(_ => Math.floor(Math.random() * 2) ) ) )
     }
 
     const handleResize = (e) => {
         // console.log(sizeContainer.current.getBoundingClientRect())
         const { width: w, height: h } = sizeContainer.current.getBoundingClientRect()
         setSize({ width: w - w % pixelSize - 80, height: h - h % pixelSize - 80 })
-
     }
 
     useEffect(() => {
@@ -40,23 +50,31 @@ const GameOfLife = () => {
     }, [])
 
     useEffect(() => {
-        setRun(false)
-
+        run.current = false
+        
         // check if size !== 0 TODO
         setGrid(Array(size.height / pixelSize).fill(Array(size.width / pixelSize).fill(0)))
-        console.log(size.width, grid)
     }, [size])
-
-    console.log(grid)
 
     return (
         <div ref={sizeContainer} className="flex h-full w-full relative items-center justify-center">
 
             {/*outline with gradient*/}
-            <div style={{ width: size.width + 5, height: size.height + 5 }} className="items-center justify-center bg-gradient-to-br from-amber-300 via-teal-300 to-indigo-500">
-                <div style={{ width: size.width, height: size.height, left: 2.5, top: 2.5 }} className="relative flex content-start flex-wrap">
-                    {(grid != null) && grid.map((row, i) => row.map((item, j) =>
-                        <div style={{ height: pixelSize, width: pixelSize }} id={10 * i + j} key={10 * i + j} className="item bg-custom-900"></div>
+            <div style={{ width: size.width + 5, height: size.height + 5 }} className="relative items-center justify-center bg-gradient-to-br from-amber-300 via-teal-300 to-indigo-500">
+
+                <div style={{ width: size.width, height: size.height, left: 2.5, top: 2.5 }} className="absolute flex content-start flex-wrap bg-custom-900">
+                    
+                    <button className="absolute p-2 opacity-50 active bg-gray-600 right-0" onClick={()=>{randomize()}}>Randomize</button>
+                    <button className="absolute p-2 opacity-50 active bg-gray-600 right-0" onClick={()=>{ run.current = !run.current; lifeCycle()}}>Run</button>
+
+                    
+                    {(grid != null) && grid.map((row, i) => row.map((num, j) =>{
+                        if(i === 0 && j === 0)console.log(grid);
+                        
+                        return <div 
+                        style={{ height: pixelSize, width: pixelSize }} 
+                        id={10 * i + j} key={10 * i + j} 
+                        className={ (num === 0) ? "bg-custom-900" : "bg-slate-200"} ></div> }
                     ))}
 
                 </div>

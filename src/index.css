@@ -18,3 +18,7 @@ body {
 .snake {
   transform: scale(1.05, 1.05);
 }
+
+.pause {
+  transform: scale(1.002, 1.002);
+}
