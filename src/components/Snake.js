@@ -3,7 +3,8 @@ import Pause from "./Pause"
 const sx = 750
 const sy = 500
 const d = 25
-const startingSpeed = 100
+const startingSpeed = 120
+const decreasePerTurn = 1
 
 // change so that on input => start a recursive function
 
@@ -42,12 +43,8 @@ function Game() {
         // direction.current.current = direction.current.next
         direction.current.next = key
         if(direction.current.next === -1){setGame(1)}
-        kek()
     }
 
-    const kek = () => {
-        
-    }
     const generateFood = () => {
         let y = Math.floor(Math.random() * sy / d)
         let x = Math.floor(Math.random() * sx / d)
@@ -108,7 +105,7 @@ function Game() {
         posArray.push(newPos)
         if (snake[snake.length - 1].x === food.x && snake[snake.length - 1].y === food.y) {
             generateFood()
-            if (speed.current > 20) { speed.current = speed.current - 0.8 }
+            if (speed.current > 25) { speed.current = speed.current - decreasePerTurn }
         } else {
             posArray.shift()
         }

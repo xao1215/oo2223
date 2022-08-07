@@ -3,11 +3,6 @@ import { Menu, Transition } from '@headlessui/react'
 import { MenuIcon } from '@heroicons/react/solid'
 import { NavLink, useLocation } from 'react-router-dom'
 
-
-function classNames(...classes) {
-    return classes.filter(Boolean).join(' ')
-}
-
 export default function Dropdown() {
     return (
         <Menu as="div" className="relative self-center block sm:hidden text-left">
