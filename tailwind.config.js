@@ -5,6 +5,10 @@ module.exports = {
   ],
   theme: {
     extend: {
+      transitionDelay: {
+        '0': '0ms',
+      },
+
       colors: {
         custom: {
           // 50: '#fdf8f6',

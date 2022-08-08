@@ -1,8 +1,7 @@
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState,useCallback } from "react"
 
-const pixelSize = 20
+const pixelSize = 15
 const speed = 100
-
 const neighbours = [
     [-1,-1],
     [-1,0],
@@ -14,31 +13,35 @@ const neighbours = [
     [1,1],
 ]
 
-
 const GameOfLife = () => {
-
     //if size smaller than something then dont run
     const sizeContainer = useRef(null)
 
     const [size, setSize] = useState({ width: 0, height: 0 })
 
-    // const [run, setRun] = useState(false)
-    const run = useRef(false)
+    const run = useRef(true)
+    const draw = useRef(false)
 
     const [grid, setGrid] = useState(null)
 
-    const lifeCycle = () => {
+    const lifeCycle = useCallback(() => {
+        
         if (!run.current) return
-
-        // console.log( Array(10).fill(),Array(10) )
         setGrid( old => {
-            let omg = [...old]
+
+            let omg = structuredClone(old)
             for(let i = 0; i < omg.length; i++){
                 for(let j = 0; j < omg[0].length; j++){
                     
                     let count = 0
+
+                    // no wrapping
+                    // neighbours.forEach( ([y,x]) => {
+                    //     count += ( i+y >= 0 && i+y < omg.length && j+x >= 0 && j+x < omg[0].length ) ? ((old[i+y][j+x] === 1) ? 1 : 0) : 0
+                    // })
+                    
                     neighbours.forEach( ([y,x]) => {
-                        count += ( i+y >= 0 && i+y < omg.length && j+x >= 0 && j+x < omg[0].length ) ? ((old[i+y][j+x] === 1) ? 1 : 0) : 0
+                        count += (old[(i+y+old.length)%old.length][(j+x+old[0].length)%old[0].length] === 1) ? 1 : 0
                     })
 
                     if(old[i][j] === 1){
@@ -49,25 +52,21 @@ const GameOfLife = () => {
 
                 }
             }
-            // console.log(omg)
+
             return omg
         })
-        // console.log("omg")
 
-        setTimeout(() => {
-            lifeCycle()
-        }, speed)
-    }
+        setTimeout(lifeCycle,speed)
+    },[])
 
     const randomize = () => {
         run.current = false
-        setGrid(Array(size.height / pixelSize).fill().map(_ => Array(size.width / pixelSize).fill().map(_ => Math.floor(Math.random() * 2))))
+        setGrid(Array(size.height / pixelSize).fill().map(_ => Array(size.width / pixelSize).fill().map(_ => Math.floor(Math.random() * 1.6))))
     }
 
     const handleResize = (e) => {
-        // console.log(sizeContainer.current.getBoundingClientRect())
         const { width: w, height: h } = sizeContainer.current.getBoundingClientRect()
-        setSize({ width: w - w % pixelSize - 80, height: h - h % pixelSize - 80 })
+        setSize({ width: w - w % pixelSize - 60, height: h - h % pixelSize - 60 })
     }
 
     useEffect(() => {
@@ -83,46 +82,53 @@ const GameOfLife = () => {
         run.current = false
 
         // check if size !== 0 TODO
-        setGrid(Array(size.height / pixelSize).fill(Array(size.width / pixelSize).fill(0)))
+        setGrid(Array(size.height / pixelSize).fill().map(_ => Array(size.width / pixelSize).fill().map(_ => 0)))
+        // setGrid(Array(size.height / pixelSize).fill(Array(size.width / pixelSize).fill(0)))
     }, [size])
-    console.log("rerender")
 
     return (
         <div ref={sizeContainer} className="flex h-full w-full relative items-center justify-center">
 
-            {/*outline with gradient*/}
             <div style={{ width: size.width + 4, height: size.height + 4 }} className="relative items-center justify-center bg-gradient-to-br from-amber-300 via-teal-300 to-indigo-500">
 
                 <div style={{ width: size.width, height: size.height, left: 2, top: 2 }} className="absolute flex content-start flex-wrap bg-custom-900">
 
                     {/* controls */}
-                    <div className="absolute right-0 origin-top-right transition duration-300  hover:scale-150">
-                        <button className="relative opacity-50 active bg-gray-600 right-0" onClick={() => { randomize() }}>Randomize</button>
-                        <button className="  opacity-50 relative active bg-gray-600 right-0" onClick={() => { run.current = !run.current; lifeCycle() }}>Run</button>
+                    <div className="absolute pl-2.5 pb-2.5 right-0 flex flex-col sm:flex-row origin-top-right transition delay-700 hover:delay-0 duration-150 hover:scale-125">
+                        <button className="relative px-2 py-1 opacity-40 hover:opacity-80 bg-gray-600" onClick={() => { draw.current = !draw.current }}>Draw</button>
+                        <button className="relative px-2 py-1 opacity-40 hover:opacity-80 bg-gray-600" onClick={() => { randomize() }}>Randomize</button>
+                        <button className="relative px-2 py-1 opacity-40 hover:opacity-80 bg-gray-600" onClick={() => { run.current = !run.current; lifeCycle() }}>Run</button>
+                        <button className="relative px-2 py-1 opacity-40 hover:opacity-80 bg-gray-600" onClick={() => { setGrid(Array(size.height / pixelSize).fill().map(_ => Array(size.width / pixelSize).fill().map(_ => 0))) }}>Clear</button>
                     </div>
 
                     {(grid != null) && grid.map((row, i) => row.map((num, j) => {
                         return <div
                                 style={{ height: pixelSize, width: pixelSize }}
                                 id={10 * i + j} key={10 * i + j}
-                                className={(num === 0) ? "bg-custom-900" : "bg-slate-200"} >
+                                className={(num === 0) ? "bg-custom-900" : "bg-slate-200"}
+                                onClick={()=>{
+                                    setGrid(prev=>{
+                                        let nju = structuredClone(prev)
+                                        nju[i][j] = Math.abs(nju[i][j] - 1)
+                                        return nju 
+                                    })
+                                }}
+                                onMouseOver={()=>{
+                                    if(draw.current){
+                                        setGrid(prev=>{
+                                            let nju = structuredClone(prev)
+                                            nju[i][j] = Math.abs(nju[i][j] - 1)
+                                            return nju 
+                                        })
+                                    }
+                                }}
+                                >
                             </div>
                     }))}
 
                 </div>
-                {/* <div style={{ width:"calc(100% - 5px)", height:"calc(100% - 20)"}} className="block  bg-custom-900"> */}
-                {/* <div className={` grid grid-rows-2 grid-cols-2 grid-flow-row`}>
-                        <div className="bg-custom-900" style={{width:100,height:100}}></div>
-                        <div style={{width:100,height:100}}></div>
-                        <div style={{width:100,height:100}}></div>
-                        <div style={{width:100,height:100}}></div>
 
-                    </div> */}
-
-                {/* </div> */}
             </div>
-
-
 
         </div>
     )
