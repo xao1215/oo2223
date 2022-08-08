@@ -18,7 +18,7 @@ function App() {
                     <Route element={<><Navbar/><GameOfLife/></>} path="/gameoflife"/>
                     <Route element={<><Navbar/><Tetris/></>} path="/tetris"/>
 
-                    {/* tetris, game of life, weather */}
+                    {/* tetris, game of life, weather, avoiding obstacles top and bottom rand generated */}
                 </Routes>
             </BrowserRouter>
         

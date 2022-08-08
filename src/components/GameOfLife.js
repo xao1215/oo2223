@@ -1,7 +1,8 @@
-import { useEffect, useRef, useState,useCallback } from "react"
+import { useEffect, useRef, useState, useCallback, memo } from "react"
 
-const pixelSize = 15
-const speed = 100
+const pixelSize = 12
+const padding = 60
+const speed = 125
 const neighbours = [
     [-1,-1],
     [-1,0],
@@ -14,6 +15,8 @@ const neighbours = [
 ]
 
 const GameOfLife = () => {
+    console.log("render")
+
     //if size smaller than something then dont run
     const sizeContainer = useRef(null)
 
@@ -66,15 +69,24 @@ const GameOfLife = () => {
 
     const handleResize = (e) => {
         const { width: w, height: h } = sizeContainer.current.getBoundingClientRect()
-        setSize({ width: w - w % pixelSize - 60, height: h - h % pixelSize - 60 })
+        setSize({ width: w - w % pixelSize - padding, height: h - h % pixelSize - padding })
+    }
+
+    const handleMouse = () => {
+        draw.current = !draw.current
     }
 
     useEffect(() => {
         window.addEventListener("resize", handleResize)
+        window.addEventListener("mousedown", handleMouse)
+        window.addEventListener("mouseup", handleMouse)
+
         handleResize()
 
         return () => {
             window.removeEventListener("resize", handleResize)
+            window.removeEventListener("mousedown", handleMouse)
+            window.removeEventListener("mouseup", handleMouse)
         }
     }, [])
 
@@ -86,6 +98,25 @@ const GameOfLife = () => {
         // setGrid(Array(size.height / pixelSize).fill(Array(size.width / pixelSize).fill(0)))
     }, [size])
 
+
+    const mouseOverGrid = useCallback((y,x) => {
+        if(draw.current){
+            setGrid(prev=>{
+                let nju = structuredClone(prev)
+                nju[y][x] = Math.abs(nju[y][x] - 1)
+                return nju 
+            })
+        }
+    },[])
+
+    const mouseClickGrid = useCallback((y,x) => {
+        setGrid(prev=>{
+            let nju = structuredClone(prev)
+            nju[y][x] = Math.abs(nju[y][x] - 1)
+            return nju 
+        })
+    },[])
+
     return (
         <div ref={sizeContainer} className="flex h-full w-full relative items-center justify-center">
 
@@ -95,35 +126,36 @@ const GameOfLife = () => {
 
                     {/* controls */}
                     <div className="absolute pl-2.5 pb-2.5 right-0 flex flex-col sm:flex-row origin-top-right transition delay-700 hover:delay-0 duration-150 hover:scale-125">
-                        <button className="relative px-2 py-1 opacity-40 hover:opacity-80 bg-gray-600" onClick={() => { draw.current = !draw.current }}>Draw</button>
+                        {/* <button className="relative px-2 py-1 opacity-40 hover:opacity-80 bg-gray-600" onClick={() => { draw.current = !draw.current }}>Draw</button> */}
                         <button className="relative px-2 py-1 opacity-40 hover:opacity-80 bg-gray-600" onClick={() => { randomize() }}>Randomize</button>
                         <button className="relative px-2 py-1 opacity-40 hover:opacity-80 bg-gray-600" onClick={() => { run.current = !run.current; lifeCycle() }}>Run</button>
                         <button className="relative px-2 py-1 opacity-40 hover:opacity-80 bg-gray-600" onClick={() => { setGrid(Array(size.height / pixelSize).fill().map(_ => Array(size.width / pixelSize).fill().map(_ => 0))) }}>Clear</button>
                     </div>
 
                     {(grid != null) && grid.map((row, i) => row.map((num, j) => {
-                        return <div
-                                style={{ height: pixelSize, width: pixelSize }}
-                                id={10 * i + j} key={10 * i + j}
-                                className={(num === 0) ? "bg-custom-900" : "bg-slate-200"}
-                                onClick={()=>{
-                                    setGrid(prev=>{
-                                        let nju = structuredClone(prev)
-                                        nju[i][j] = Math.abs(nju[i][j] - 1)
-                                        return nju 
-                                    })
-                                }}
-                                onMouseOver={()=>{
-                                    if(draw.current){
-                                        setGrid(prev=>{
-                                            let nju = structuredClone(prev)
-                                            nju[i][j] = Math.abs(nju[i][j] - 1)
-                                            return nju 
-                                        })
-                                    }
-                                }}
-                                >
-                            </div>
+                        return <Pixel key={10*i+j} i={i} j={j} num={num} omo={mouseOverGrid} omc={mouseClickGrid} />
+                        // return <button
+                        //         style={{ height: pixelSize, width: pixelSize }}
+                        //         key={10 * i + j}
+                        //         className={(num === 0) ? "bg-custom-900" : "bg-slate-200"}
+                        //         onClick={()=>{
+                        //             setGrid(prev=>{
+                        //                 let nju = structuredClone(prev)
+                        //                 nju[i][j] = Math.abs(nju[i][j] - 1)
+                        //                 return nju 
+                        //             })
+                        //         }}
+                        //         onMouseOver={()=>{
+                        //             if(draw.current){
+                        //                 setGrid(prev=>{
+                        //                     let nju = structuredClone(prev)
+                        //                     nju[i][j] = Math.abs(nju[i][j] - 1)
+                        //                     return nju 
+                        //                 })
+                        //             }
+                        //         }}
+                        //         >
+                        //     </button>
                     }))}
 
                 </div>
@@ -133,6 +165,21 @@ const GameOfLife = () => {
         </div>
     )
 }
+
+const Pixel = memo(({i,j,num,omo,omc}) => {
+    console.log("render" + i + ":" + j)
+    return <button
+        style={{ height: pixelSize, width: pixelSize }}
+        className={(num === 0) ? "bg-custom-900" : "bg-slate-200"}
+        onClick={() => {
+            omc(i,j)
+        }}
+        onMouseOver={() => {
+            omo(i,j)
+        }}
+    >
+    </button>
+})
 
 
 export default GameOfLife
