@@ -1,6 +1,6 @@
 import { Fragment } from 'react'
 import { Menu, Transition } from '@headlessui/react'
-import { MenuIcon } from '@heroicons/react/solid'
+import { HiMenu } from "react-icons/hi"
 import { NavLink, useLocation } from 'react-router-dom'
 
 export default function Dropdown() {
@@ -8,7 +8,7 @@ export default function Dropdown() {
         <Menu as="div" className="relative self-center block sm:hidden text-left">
             <div className="py-3 px-3">
                 <Menu.Button className="flex rounded-sm shadow-sm px-3 py-3 text-sm font-medium text-neutral-200 hover:text-neutral-50 hover:bg-custom-800 focus:outline-none">
-                    <MenuIcon className="h-5 w-5" aria-hidden="true" />
+                    <HiMenu className="h-5 w-5" aria-hidden="true" />
                 </Menu.Button>
             </div>
 

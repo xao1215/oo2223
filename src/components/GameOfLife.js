@@ -1,8 +1,11 @@
 import { useEffect, useRef, useState, useCallback, memo } from "react"
+import { HiOutlineRefresh } from "react-icons/hi"
+import { MdOutlineClear, MdPlayArrow, MdPause } from "react-icons/md"
+import { Transition } from "@headlessui/react"
 
 const pixelSize = 12
 const padding = 60
-const speed = 125
+const speed = 150
 const neighbours = [
     [-1,-1],
     [-1,0],
@@ -22,14 +25,14 @@ const GameOfLife = () => {
 
     const [size, setSize] = useState({ width: 0, height: 0 })
 
-    const run = useRef(true)
+    const [run, setRun] = useState(false)
+    const runref = useRef(false)
     const draw = useRef(false)
 
     const [grid, setGrid] = useState(null)
 
     const lifeCycle = useCallback(() => {
-        
-        if (!run.current) return
+        if (!runref.current) return
         setGrid( old => {
 
             let omg = structuredClone(old)
@@ -63,7 +66,8 @@ const GameOfLife = () => {
     },[])
 
     const randomize = () => {
-        run.current = false
+        setRun(false)
+        runref.current = false
         setGrid(Array(size.height / pixelSize).fill().map(_ => Array(size.width / pixelSize).fill().map(_ => Math.floor(Math.random() * 1.6))))
     }
 
@@ -91,7 +95,8 @@ const GameOfLife = () => {
     }, [])
 
     useEffect(() => {
-        run.current = false
+        setRun(false)
+        runref.current = false
 
         // check if size !== 0 TODO
         setGrid(Array(size.height / pixelSize).fill().map(_ => Array(size.width / pixelSize).fill().map(_ => 0)))
@@ -125,11 +130,45 @@ const GameOfLife = () => {
                 <div style={{ width: size.width, height: size.height, left: 2, top: 2 }} className="absolute flex content-start flex-wrap bg-custom-900">
 
                     {/* controls */}
-                    <div className="absolute pl-2.5 pb-2.5 right-0 flex flex-col sm:flex-row origin-top-right transition delay-700 hover:delay-0 duration-150 hover:scale-125">
+                    <div className="absolute pl-2.5 pb-2.5 right-0 flex flex-col sm:flex-row origin-top-right transition delay-700 hover:delay-0 duration-150 hover:scale-150">
                         {/* <button className="relative px-2 py-1 opacity-40 hover:opacity-80 bg-gray-600" onClick={() => { draw.current = !draw.current }}>Draw</button> */}
-                        <button className="relative px-2 py-1 opacity-40 hover:opacity-80 bg-gray-600" onClick={() => { randomize() }}>Randomize</button>
-                        <button className="relative px-2 py-1 opacity-40 hover:opacity-80 bg-gray-600" onClick={() => { run.current = !run.current; lifeCycle() }}>Run</button>
-                        <button className="relative px-2 py-1 opacity-40 hover:opacity-80 bg-gray-600" onClick={() => { setGrid(Array(size.height / pixelSize).fill().map(_ => Array(size.width / pixelSize).fill().map(_ => 0))) }}>Clear</button>
+                        
+                        <button className="relative px-2 py-1 opacity-40 hover:opacity-90 bg-gray-600" onClick={() => { randomize() }}>
+                            <HiOutlineRefresh className="scale-90 h-5 w-5"/>
+                        </button>
+                        
+                        <button className="relative px-2 py-1 opacity-40 hover:opacity-90 text-white bg-gray-600" onClick={() => { setRun(run => !run); runref.current = !runref.current; lifeCycle() }}>
+
+                            <span className="block h-5 w-5">
+                                <Transition className="absolute"
+                                    show={run}
+                                    enter="transition duration-500"
+                                    enterFrom="transform opacity-0 scale-0"
+                                    enterTo="transform  opacity-100 scale-100"
+                                    leave={`transition ease-in duration-500`}
+                                    leaveFrom="transform opacity-100 scale-100"
+                                    leaveTo="transform opacity-0 scale-0"
+                                >
+                                    <MdPause className="h-5 w-5" />
+                                </Transition>
+                                <Transition className="absolute"
+                                    show={!run}
+                                    enter="transition duration-500"
+                                    enterFrom="transform opacity-0 scale-0"
+                                    enterTo="transform opacity-100 scale-100"
+                                    leave="transition ease-in duration-500"
+                                    leaveFrom="transform opacity-100 scale-100"
+                                    leaveTo="transform opacity-0 scale-0"
+                                >
+                                    <MdPlayArrow className="h-5 w-5" />
+                                </Transition>
+                            </span>
+                            
+                        </button>
+                        
+                        <button className="relative px-2 py-1 opacity-40 hover:opacity-90 bg-gray-600" onClick={() => { setGrid(Array(size.height / pixelSize).fill().map(_ => Array(size.width / pixelSize).fill().map(_ => 0))) }}>
+                            <MdOutlineClear className="h-5 w-5"/>
+                        </button>
                     </div>
 
                     {(grid != null) && grid.map((row, i) => row.map((num, j) => {
@@ -167,7 +206,6 @@ const GameOfLife = () => {
 }
 
 const Pixel = memo(({i,j,num,omo,omc}) => {
-    console.log("render" + i + ":" + j)
     return <button
         style={{ height: pixelSize, width: pixelSize }}
         className={(num === 0) ? "bg-custom-900" : "bg-slate-200"}
