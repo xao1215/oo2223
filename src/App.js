@@ -3,7 +3,7 @@ import React from 'react';
 import Snake from './components/Snake'
 import GameOfLife from './components/GameOfLife'
 import Navbar from './components/Navbar'
-import Tetris from './components/Tetris'
+import TypeRacer from './components/TypeRacer'
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 
 function App() {
@@ -16,9 +16,9 @@ function App() {
 
                     <Route element={<><Navbar/><Snake/></>} path="/"/>
                     <Route element={<><Navbar/><GameOfLife/></>} path="/gameoflife"/>
-                    <Route element={<><Navbar/><Tetris/></>} path="/tetris"/>
+                    <Route element={<><Navbar/><TypeRacer/></>} path="/typeracer"/>
 
-                    {/* tetris, game of life, weather, avoiding obstacles top and bottom rand generated */}
+                    {/* tetris, weather, avoiding obstacles top and bottom rand generated, typeracer */}
                 </Routes>
             </BrowserRouter>
         

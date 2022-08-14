@@ -23,7 +23,7 @@ const GameOfLife = () => {
     //if size smaller than something then dont run
     const sizeContainer = useRef(null)
 
-    const [size, setSize] = useState({ width: 0, height: 0 })
+    const [size, setSize] = useState({ width: 360, height: 360 })
 
     const [run, setRun] = useState(false)
     const runref = useRef(false)
@@ -31,7 +31,7 @@ const GameOfLife = () => {
 
     const [grid, setGrid] = useState(null)
 
-    const lifeCycle = useCallback(() => {
+    const lifeCycle = () => {
         if (!runref.current) return
         setGrid( old => {
 
@@ -63,7 +63,7 @@ const GameOfLife = () => {
         })
 
         setTimeout(lifeCycle,speed)
-    },[])
+    }
 
     const randomize = () => {
         setRun(false)
@@ -130,7 +130,7 @@ const GameOfLife = () => {
                 <div style={{ width: size.width, height: size.height, left: 2, top: 2 }} className="absolute flex content-start flex-wrap bg-custom-900">
 
                     {/* controls */}
-                    <div className="absolute pl-2.5 pb-2.5 right-0 flex flex-col sm:flex-row origin-top-right transition delay-700 hover:delay-0 duration-150 hover:scale-150">
+                    <div className="absolute pl-2.5 pb-2.5 right-0 flex flex-col xs:flex-row origin-top-right transition delay-700 hover:delay-0 duration-150 hover:scale-150">
                         {/* <button className="relative px-2 py-1 opacity-40 hover:opacity-80 bg-gray-600" onClick={() => { draw.current = !draw.current }}>Draw</button> */}
                         
                         <button className="relative px-2 py-1 opacity-40 hover:opacity-90 bg-gray-600" onClick={() => { randomize() }}>
@@ -208,7 +208,7 @@ const GameOfLife = () => {
 const Pixel = memo(({i,j,num,omo,omc}) => {
     return <button
         style={{ height: pixelSize, width: pixelSize }}
-        className={(num === 0) ? "bg-custom-900" : "bg-slate-200"}
+        className={` ${(num === 0) ? "bg-custom-900" : "bg-slate-200"} hover:bg-neutral-500 `}
         onClick={() => {
             omc(i,j)
         }}

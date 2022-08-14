@@ -4,12 +4,11 @@ const sx = 750
 const sy = 500
 const d = 25
 const startingSpeed = 120
-const decreasePerTurn = 1
+const decreasePerTurn = 0.9
 
 // change so that on input => start a recursive function
 
 function Game() {
-    console.log("render")
     const [snake, setSnake] = useState([{ x: 0, y: 0 }])
     const direction = useRef({ prev: 0, next: -1 })
 
@@ -105,7 +104,7 @@ function Game() {
         posArray.push(newPos)
         if (snake[snake.length - 1].x === food.x && snake[snake.length - 1].y === food.y) {
             generateFood()
-            if (speed.current > 25) { speed.current = speed.current - decreasePerTurn }
+            if (speed.current > 39) { speed.current = speed.current - decreasePerTurn }
         } else {
             posArray.shift()
         }
@@ -118,7 +117,7 @@ function Game() {
         <div className="flex h-full w-full relative items-center justify-center">
 
             {/*outline with gradient*/}
-            <div className="bg-gradient-to-tr  from-blue-500 via-purple-600 to-red-600 flex justify-center items-center relative outline-none" style={{ width: size.x + 5, height: size.y + 5 }}>
+            <div className="bg-gradient-to-tr   from-amber-400 via-red-400 to-lime-400 flex justify-center items-center relative outline-none" style={{ width: size.x + 5, height: size.y + 5 }}>
                 <div ref={focusContainer} tabIndex={-1} className="bg-custom-900 relative outline-none" style={{ width: size.x, height: size.y }}>
                     <div style={{ width: sx, height: sy }} className="absolute flex flex-col ">
                         {(new Array(sy / d)).fill(0).map((ting, i) => <div className={`${(i === (sy / d) - 1) ? "" : "border-b"} opacity-50 border-slate-700 relative t-30`} key={i} style={{ width: sx, height: d }}></div>)}
