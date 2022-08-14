@@ -23,6 +23,10 @@ body {
   transform: scale(1.002, 1.002);
 }
 
+#theme{
+  /* transform: scale(1.25, 1.25); */
+}
+
 /* .item {
   user-drag: none;
   -webkit-user-drag: none;

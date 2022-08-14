@@ -125,7 +125,7 @@ const GameOfLife = () => {
     return (
         <div ref={sizeContainer} className="flex h-full w-full relative items-center justify-center">
 
-            <div style={{ width: size.width + 4, height: size.height + 4 }} className="relative items-center justify-center bg-gradient-to-br from-amber-300 via-teal-300 to-indigo-500">
+            <div style={{ width: size.width + 4, height: size.height + 4 }} className="relative items-center justify-center bg-gradient-to-br from-amber-300 via-green-300 to-emerald-500">
 
                 <div style={{ width: size.width, height: size.height, left: 2, top: 2 }} className="absolute flex content-start flex-wrap bg-custom-900">
 

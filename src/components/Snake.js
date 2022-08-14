@@ -4,7 +4,7 @@ const sx = 750
 const sy = 500
 const d = 25
 const startingSpeed = 120
-const decreasePerTurn = 0.9
+const decreasePerTurn = 0.75
 
 // change so that on input => start a recursive function
 
@@ -104,7 +104,7 @@ function Game() {
         posArray.push(newPos)
         if (snake[snake.length - 1].x === food.x && snake[snake.length - 1].y === food.y) {
             generateFood()
-            if (speed.current > 39) { speed.current = speed.current - decreasePerTurn }
+            if (speed.current > 45) { speed.current = speed.current - decreasePerTurn }
         } else {
             posArray.shift()
         }
