@@ -31,7 +31,7 @@ export default function Dropdown() {
                             Game of Life
                         </NavLink>
 
-                        <NavLink to="/tetris" className={`block rounded-b-md  px-4 py-2 text-sm ${(useLocation().pathname === "/tetris") ? "text-pink-500" : ("text-gray-500 hover:text-gray-100 hover:bg-custom-900")} `}>
+                        <NavLink to="/typeracer" className={`block rounded-b-md  px-4 py-2 text-sm ${(useLocation().pathname === "/typeracer") ? "text-pink-500" : ("text-gray-500 hover:text-gray-100 hover:bg-custom-900")} `}>
                             Tetris
                         </NavLink>
 
