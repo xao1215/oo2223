@@ -1,37 +1,52 @@
 import Dropdown from './Dropdown'
 import { NavLink, useLocation } from 'react-router-dom'
 import { useState } from 'react'
-import { HiMoon } from 'react-icons/hi'
 import { useEffect } from 'react'
+import { HiMoon } from 'react-icons/hi'
+import { GiSun } from 'react-icons/gi'
 
 // import { CubeIcon } from "@heroicons/react/solid"
 
 const Navbar = () => {
     const [theme, setTheme] = useState(true)
 
+    useEffect(()=>{
+        document.documentElement.classList.add("dark")
+    },[])
+
+    useEffect(()=>{
+        if(theme){
+            document.documentElement.classList.add("dark")
+        }else{
+            document.documentElement.classList.remove("dark")
+        }
+    },[theme])
+
+    // bg-slate-400  + bg-slate-100 FOR LIGHT THEME PRIMARY?
+
     return (
 
-        <nav style={{ zIndex: 3333 }} className="relative flex justify-end sm:justify-center gap-0  bg-white w-full    dark:bg-custom-900">
+        <nav style={{ zIndex: 3333 }} className="relative flex justify-end sm:justify-center gap-0 w-full bg-neutral-50 dark:bg-custom-900">
 
             {/* <div className="self-center"></div> */}
 
             <div className="content-center m-0 col-span-10 justify-center hidden sm:flex" id="navbar-default">
-                <ul className="flex bg-gray-50 flex-row mt-0 text-md dark:bg-custom-900 ">
+                <ul className="flex flex-row mt-0 text-md text-gray-900 dark:text-gray-300 ">
 
-                    <li className="self-center transition duration-300 ease-in-out hover:bg-opacity-25 hover:bg-amber-500 ">
-                        <NavLink to="/" style={{ fontFamily: "Bebas Neue" }} className={`block   tracking-wider ${(useLocation().pathname === "/") ? "text-amber-500" : "text-gray-300"} hover:text-amber-500`}>
+                    <li className="self-center transition duration-300 ease-in-out hover:bg-opacity-25 hover:bg-rose-500 ">
+                        <NavLink to="/" style={{ fontFamily: "Bebas Neue" }} className={`block   tracking-wider ${(useLocation().pathname === "/") ? "text-amber-500" : ""} hover:text-amber-500`}>
                             <p className="px-8 pt-5 pb-4 transition duration-500 ease-in-out text-2xl hover:scale-125 ">Snake</p>
                         </NavLink>
                     </li>
 
-                    <li className="self-center transition duration-300 ease-in-out hover:bg-opacity-20 hover:bg-lime-400">
-                        <NavLink to="/gameoflife" style={{ fontFamily: "Bebas Neue" }} className={`block tracking-wider ${(useLocation().pathname === "/gameoflife") ? "text-lime-500" : "text-gray-300"} hover:text-lime-500`}>
+                    <li className="self-center transition duration-300 ease-in-out hover:bg-opacity-20 hover:bg-green-400">
+                        <NavLink to="/gameoflife" style={{ fontFamily: "Bebas Neue" }} className={`block tracking-wider ${(useLocation().pathname === "/gameoflife") ? "text-lime-500" : ""} hover:text-lime-500`}>
                             <div className="px-8 pt-5 pb-4 transition duration-500 text-2xl ease-in-out hover:scale-125 ">Game Of Life</div>
                         </NavLink>
                     </li>
 
-                    <li className="self-center transition duration-300 ease-in-out hover:bg-opacity-25 hover:bg-pink-500">
-                        <NavLink to="/typeracer" style={{ fontFamily: "Bebas Neue" }} className={`block   tracking-wider ${(useLocation().pathname === "/typeracer") ? "text-pink-600" : "text-gray-300"} hover:text-pink-600`}>
+                    <li className="self-center transition duration-300 ease-in-out hover:bg-opacity-25 hover:bg-violet-500">
+                        <NavLink to="/typeracer" style={{ fontFamily: "Bebas Neue" }} className={`block   tracking-wider ${(useLocation().pathname === "/typeracer") ? "text-pink-600" : ""} hover:text-pink-600`}>
                             <p className="px-8 pt-5 pb-4 transition duration-500 ease-in-out text-2xl hover:scale-125 ">TypeRacer</p>
                         </NavLink>
                     </li>
@@ -49,9 +64,9 @@ const Navbar = () => {
             </div>
 
             <div className="sm:pr-3 rounded-full relative sm:absolute self-center flex sm:right-0 right-auto">
-                <button id="theme" className="outline-none relative p-3 opacity-80  hover:opacity-100 hover:bg-custom-800 rounded-full">
-                        <div className="p-px border-2 text-neutral-50 border-neutral-50 rounded-full">
-                            <HiMoon className="h-4 w-4 rounded-full" />
+                <button onClick={()=>{ setTheme(t => !t) }} id="theme" className="outline-none relative p-3 opacity-90 hover:bg-neutral-200 dark:hover:opacity-100 dark:hover:bg-custom-800 rounded-full">
+                        <div className="p-px border-2 dark:text-neutral-50 dark:border-neutral-50 text-neutral-900 border-neutral-900 rounded-full">
+                            { theme ? <GiSun className="h-4 w-4 rounded-full"/> : <HiMoon className="h-4 w-4 rounded-full"/> }
                         </div>
                 </button>
             </div>

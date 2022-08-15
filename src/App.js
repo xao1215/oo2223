@@ -8,6 +8,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom"
 
 function App() {
 
+    // do context for navbar link mapping ?  
+
     return (
         <>
 
