@@ -4,6 +4,7 @@ const sx = 750
 const sy = 500
 const d = 25
 const startingSpeed = 120
+const speedLimit = 45
 const decreasePerTurn = 0.75
 
 // change so that on input => start a recursive function
@@ -21,6 +22,8 @@ function Game() {
     const focusContainer = useRef(null)
 
     const handleKeyDown = (e) => {
+        if(direction.current.next === -1){setGame(1)}
+
         let key = e.keyCode
         if (key === 37) { key = (direction.current.prev === 39) ? 39 : 37 }
         else if (key === 39) { key = (direction.current.prev === 37) ? 37 : 39 }
@@ -41,7 +44,6 @@ function Game() {
         // edit this to stop at random key
         // direction.current.current = direction.current.next
         direction.current.next = key
-        if(direction.current.next === -1){setGame(1)}
     }
 
     const generateFood = () => {
@@ -85,11 +87,12 @@ function Game() {
             default: return;
         }
 
+        //check col
         for (let i = 0; i < snake.length - 3; i++) {
             if (snake[snake.length - 1].x === snake[i].x && snake[snake.length - 1].y === snake[i].y) {
                 speed.current = startingSpeed
                 setGame(snake.length - 1)
-                direction.current.next = 0
+                direction.current.next = -1
                 direction.current.prev = 0
                 const newY = Math.floor(Math.random() * sy / d)
                 const newX = Math.floor(Math.random() * sx / d)
@@ -99,17 +102,17 @@ function Game() {
             }
         }
 
+        //move
         direction.current.prev = direction.current.next
         let posArray = [...snake]
         posArray.push(newPos)
         if (snake[snake.length - 1].x === food.x && snake[snake.length - 1].y === food.y) {
             generateFood()
-            if (speed.current > 45) { speed.current = speed.current - decreasePerTurn }
+            if (speed.current > speedLimit) { speed.current = speed.current - decreasePerTurn }
         } else {
             posArray.shift()
         }
         setSnake(posArray)
-
 
     }, [time])
 
@@ -120,10 +123,10 @@ function Game() {
             <div className="bg-gradient-to-tr   from-amber-400 via-red-400 to-lime-400 flex justify-center items-center relative outline-none" style={{ width: size.x + 5, height: size.y + 5 }}>
                 <div ref={focusContainer} tabIndex={-1} className="bg-custom-900 relative outline-none" style={{ width: size.x, height: size.y }}>
                     <div style={{ width: sx, height: sy }} className="absolute flex flex-col ">
-                        {(new Array(sy / d)).fill(0).map((ting, i) => <div className={`${(i === (sy / d) - 1) ? "" : "border-b"} opacity-50 border-slate-700 relative t-30`} key={i} style={{ width: sx, height: d }}></div>)}
+                        {(new Array(sy / d)).fill(0).map((ting, i) => <div className={`${(i === (sy / d) - 1) ? "" : "border-b"} opacity-50 border-neutral-700 relative t-30`} key={i} style={{ width: sx, height: d }}></div>)}
                     </div>
                     <div style={{ width: sx, height: sy }} className="absolute flex flex-row ">
-                        {(new Array(sx / d)).fill(0).map((ting, i) => <div className={`${(i === (sx / d) - 1) ? "" : "border-r"} opacity-50 border-slate-700 relative t-30`} key={i} style={{ width: d, height: sy }}></div>)}
+                        {(new Array(sx / d)).fill(0).map((ting, i) => <div className={`${(i === (sx / d) - 1) ? "" : "border-r"} opacity-50 border-neutral-700 relative t-30`} key={i} style={{ width: d, height: sy }}></div>)}
                     </div>
 
                     <Food position={food}></Food>

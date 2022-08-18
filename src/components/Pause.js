@@ -7,7 +7,7 @@ const Pause = React.memo(({ gameState, score }) => {
                 { (gameState>0) && <p className="text-5xl font-thin mb-3">{ (gameState >= 2) ? "Game Over" : "Paused" }</p> }
                 <p className="text-7xl font-thin mb-3">Score: { (gameState >= 2) ? gameState : score }</p>
 
-                <p className="font-thin">{ (gameState === 1) ? "press any key to continue" : ((gameState === 2) ? "press any key to start again" : "use the arrow keys to move") }</p>
+                <p className="font-thin">{ (gameState === 1) ? "press any key to continue" : ((gameState >= 2) ? "press any key to start again" : "use the arrow keys to move") }</p>
                 </div>
         </div>
     )

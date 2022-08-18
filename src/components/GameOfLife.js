@@ -4,7 +4,7 @@ import { MdOutlineClear, MdPlayArrow, MdPause } from "react-icons/md"
 import { Transition } from "@headlessui/react"
 
 const pixelSize = 12
-const padding = 60
+const padding = 72
 const speed = 150
 const neighbours = [
     [-1,-1],
@@ -122,12 +122,16 @@ const GameOfLife = () => {
         })
     },[])
 
+    if(size.width < 400){
+        return <div ref={sizeContainer} className="flex h-full w-full relative items-center justify-center"></div>
+    }
+
     return (
         <div ref={sizeContainer} className="flex h-full w-full relative items-center justify-center">
 
-            <div style={{ width: size.width + 4, height: size.height + 4 }} className="relative items-center justify-center bg-gradient-to-br from-amber-300 via-green-300 to-emerald-500">
+            <div style={{ width: size.width + 3, height: size.height + 3 }} className="relative items-center justify-center bg-gradient-to-br from-amber-300 via-green-300 to-emerald-500">
 
-                <div style={{ width: size.width, height: size.height, left: 2, top: 2 }} className="absolute flex content-start flex-wrap bg-custom-900">
+                <div style={{ width: size.width, height: size.height, left: 1.5, top: 1.5 }} className="absolute flex content-start flex-wrap bg-custom-900">
 
                     {/* controls */}
                     <div className="absolute pl-2.5 pb-2.5 right-0 flex flex-col xs:flex-row origin-top-right transition delay-700 hover:delay-0 duration-150 hover:scale-150">
@@ -138,7 +142,6 @@ const GameOfLife = () => {
                         </button>
                         
                         <button className="relative px-2 py-1 opacity-40 hover:opacity-90 text-white bg-gray-600" onClick={() => { setRun(run => !run); runref.current = !runref.current; lifeCycle() }}>
-
                             <span className="block h-5 w-5">
                                 <Transition className="absolute"
                                     show={run}
@@ -163,7 +166,6 @@ const GameOfLife = () => {
                                     <MdPlayArrow className="h-5 w-5" />
                                 </Transition>
                             </span>
-                            
                         </button>
                         
                         <button className="relative px-2 py-1 opacity-40 hover:opacity-90 bg-gray-600" onClick={() => { setGrid(Array(size.height / pixelSize).fill().map(_ => Array(size.width / pixelSize).fill().map(_ => 0))) }}>
@@ -173,34 +175,10 @@ const GameOfLife = () => {
 
                     {(grid != null) && grid.map((row, i) => row.map((num, j) => {
                         return <Pixel key={10*i+j} i={i} j={j} num={num} omo={mouseOverGrid} omc={mouseClickGrid} />
-                        // return <button
-                        //         style={{ height: pixelSize, width: pixelSize }}
-                        //         key={10 * i + j}
-                        //         className={(num === 0) ? "bg-custom-900" : "bg-slate-200"}
-                        //         onClick={()=>{
-                        //             setGrid(prev=>{
-                        //                 let nju = structuredClone(prev)
-                        //                 nju[i][j] = Math.abs(nju[i][j] - 1)
-                        //                 return nju 
-                        //             })
-                        //         }}
-                        //         onMouseOver={()=>{
-                        //             if(draw.current){
-                        //                 setGrid(prev=>{
-                        //                     let nju = structuredClone(prev)
-                        //                     nju[i][j] = Math.abs(nju[i][j] - 1)
-                        //                     return nju 
-                        //                 })
-                        //             }
-                        //         }}
-                        //         >
-                        //     </button>
                     }))}
 
                 </div>
-
             </div>
-
         </div>
     )
 }
