@@ -3,8 +3,8 @@ import { HiOutlineRefresh } from "react-icons/hi"
 import { MdOutlineClear, MdPlayArrow, MdPause } from "react-icons/md"
 import { Transition } from "@headlessui/react"
 
-const pixelSize = 12
-const padding = 72
+const pixelSize = 15
+const padding = 75
 const speed = 150
 const neighbours = [
     [-1,-1],
