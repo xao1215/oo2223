@@ -2,16 +2,26 @@ import { useEffect, useState, useRef } from 'react';
 import data from './data.js' 
 
 const getRandomWords = () => {
-    let arr = (new Array(data.length)).fill(0).map( (el,i) => i )
+    let small = (new Array(1560)).fill(0).map( (_,i) => i )
+    let big = (new Array(data.length - 1560)).fill(0).map( (_,i) => i + 1560 )
     let result = []
 
     let howMany = 250
     while( howMany-- ){
-        let which = Math.floor(Math.random() * (data.length - result.length))
-        result.push( data[ arr[which] ] )
-        result.push(" ")
-        arr.slice(which,1)
+        if( Math.random() > 0.3 ){
+            console.log("kek")
+            let which = Math.floor(Math.random() * small.length)
+            result.push( data[ small[which] ] )
+            result.push(" ")
+            small.splice(which,1)
+        }else{
+            let which = Math.floor(Math.random() * big.length)
+            result.push( data[ big[which] ] )
+            result.push(" ")
+            big.splice(which,1)
+        }
     }
+    console.log(result)
 
     // console.log(result)
     return result
@@ -38,18 +48,16 @@ const TypeRacer = () => {
     const handleInput = (e) => {
         let newInput = e.target.value
 
-        // if valid
         setInput(newInput)
 
         let right = 0
-
         for(let i = 0; i < newInput.length; i++){
             if(! (newInput.charAt(i) === current.charAt(i)) ){
                 break;
             }
             right += 1
         }
-        console.log("true : " + right)
+
         if(current.length === right){
             which.current.word += 1
             which.current.char = 0
@@ -58,22 +66,27 @@ const TypeRacer = () => {
         }else{
             which.current.char = right
         }
-
     }
+
+    const focusInput = () => {
+        focus.current.focus()
+    }
+
+    // option to see stats once you start, reset button, try query random api, usecontext for navbar routes
 
     return (
         <div className="flex h-full w-full items-center justify-center">
             {/*outline with gradient*/}
-            <div className="bg-slate-400 h-5/6 w-5/6 items-center justify-center flex " >
+            <div onClick={ () => focusInput() } className="bg-slate-400 h-5/6 w-5/6 items-center justify-center flex " >
 
-                <div className="flex h-5/6 w-4/5 overflow-hidden bg-slate-100 text-black">
+                <div  className="flex h-5/6 w-4/5 overflow-hidden bg-slate-100 text-black">
 
                     <div className="bg-slate-300 text-3xl w-1/2 leading-normal items-center flex justify-end">
                         <div className="absolute whitespace-nowrap">
                             {words.slice(0,which.current.word).map( w => isSpace(w) ) }
                             { [...input].map( (w,i) => <div className={`inline-block ${ i < which.current.char ? "bg-green-500" : "bg-red-400"} text-transparent`}>{isSpace(w)}</div>)} 
                         </div>
-                        <input autoFocus={true} value={input} onChange={handleInput} spellCheck="false" className="text-right caret-black absolute whitespace-nowrap m-0 right-1/2 bg-transparent outline-none ">
+                        <input ref={focus} autoFocus={true} value={input} onChange={handleInput} spellCheck="false" className="text-right caret-black absolute whitespace-nowrap m-0 right-1/2 bg-transparent outline-none ">
                         </input>
                     </div>
 

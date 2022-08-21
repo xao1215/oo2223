@@ -4,7 +4,8 @@ import { MdOutlineClear, MdPlayArrow, MdPause } from "react-icons/md"
 import { Transition } from "@headlessui/react"
 
 const pixelSize = 15
-const padding = 75
+const paddingx = 360
+const paddingy = 75
 const speed = 150
 const neighbours = [
     [-1,-1],
@@ -73,7 +74,7 @@ const GameOfLife = () => {
 
     const handleResize = (e) => {
         const { width: w, height: h } = sizeContainer.current.getBoundingClientRect()
-        setSize({ width: w - w % pixelSize - padding, height: h - h % pixelSize - padding })
+        setSize({ width: w - w % pixelSize - paddingx, height: h - h % pixelSize - paddingy })
     }
 
     const handleMouse = () => {
