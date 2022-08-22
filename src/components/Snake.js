@@ -117,7 +117,7 @@ function Game() {
     }, [time])
 
     return (
-        <div className="flex h-full w-full relative items-center justify-center">
+        <div className="flex  pt-28 lg:pt-0   h-full w-full relative items-center justify-center">
 
             {/*outline with gradient*/}
             <div className="bg-gradient-to-tr   from-amber-400 via-red-400 to-lime-400 flex justify-center items-center relative outline-none" style={{ width: size.x + 5, height: size.y + 5 }}>

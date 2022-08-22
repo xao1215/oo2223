@@ -28,8 +28,11 @@ const getRandomWords = () => {
 const isSpace = (word, i, opacity) => {
     opacity = opacity < 10 ? 10 : opacity
     const style = "inline-block"   
-
     return ( <div style={{opacity:opacity/100}} key={i} className={style}> { word === " " ? <>&nbsp;</> : word } </div> )
+}
+
+const space = (word) => {
+    return (  word === " " ? <>&nbsp;</> : word  )
 }
 
 async function fetchShit() {
@@ -38,7 +41,7 @@ async function fetchShit() {
 }
 
 const TypeRacer = () => {
-    const { data, status, error } = useQuery(["shit"], () => fetchShit())
+    // const { data, status, error } = useQuery(["shit"], () => fetchShit())
 
     const [words, setWords] = useState([])
     const [input, setInput] = useState("")
@@ -83,11 +86,10 @@ const TypeRacer = () => {
     // option to see stats once you start, reset button, try query random api, usecontext for navbar routes
     //two INPUTS IN THE BACK???
 
-    console.log(data,status)
     return (
-        <div className="flex flex-col gap-10 h-full w-full items-center justify-center">
+        <div className="flex flex-col text-2xl md:text-5xl gap-4 md:gap-9 h-full w-full items-center justify-center">
 
-            <div onClick={ () => focusInput() } className="text-5xl tracking-wide font-thin text-white bg-custom-900 shadow-2xl h-36 w-full items-center justify-center flex " >
+            <div onClick={ () => focusInput() } className="font-thin text-white bg-custom-900 shadow-2xl h-16 md:h-32 w-full items-center justify-center flex " >
 
                 <div  className="flex overflow-hidden">
 
@@ -95,10 +97,12 @@ const TypeRacer = () => {
                         <div className="absolute whitespace-nowrap">
 
                             {words.slice(0,which.current.word).map( (w,i) => isSpace(w,i,10) ) }
-                            { [...input].map( (w,i) => <div key={i} className={`text-transparent inline-block ${ i < which.current.char ? "bg-green-500" : "bg-red-500"}`}>{isSpace(w,i,100)}</div>)}
+                            {/* { [...input].map( (w,i) => <div key={i} className={`text-green-500 inline-block ${ i < which.current.char ? "bg-green-500" : "bg-red-500"}`}>{isSpace(w,i,100)}</div>)} */}
+                            <p className="inline-block text-transparent bg-green-500 ">{[...input].map( (w,i) => i < which.current.char ? space(w) : "")}</p>
+                            <p className="inline-block bg-red-500 text-transparent ">{[...input].map( (w,i) => i >= which.current.char ? space(w) : "")}</p>
 
                         </div>
-                        <input onKeyDown={ (e) => /^[^a-z\s]+$/.test(e.key) && e.preventDefault() } ref={focus} autoFocus={true} value={input} onChange={handleInput} spellCheck="false" className="text-right w-full absolute tracking-wide whitespace-nowrap m-0 right-1/2 bg-transparent outline-none text-white ">
+                        <input onKeyDown={ (e) => /^[^a-z\s]+$/.test(e.key) && e.preventDefault() } ref={focus} autoFocus={true} value={input} onChange={handleInput} spellCheck="false" className="text-right w-full absolute  whitespace-nowrap m-0 right-1/2 bg-transparent outline-none text-white ">
                         </input>
                     </div>
 
@@ -106,7 +110,7 @@ const TypeRacer = () => {
                         <div className=" w-1/2 overflow-hidden absolute whitespace-nowrap">
 
                             { [...(current.slice(which.current.char,current.length))].map( (char,i) => isSpace(char,i,100)) }
-                            {words.map( (w,i) => ( i > which.current.word ) ? (isSpace(w,i,100-(i-which.current.word)*5)) : "" )}
+                            {words.map( (w,i) => ( i > which.current.word ) ? (isSpace(w,i,100-(i-which.current.word)*10)) : "" )}
 
                         </div>
                     </div>
@@ -116,8 +120,8 @@ const TypeRacer = () => {
 
             </div>
 
-            <div className="pt-12 pb-14 w-full shadow-xl align-middle text-5xl whitespace-nowrap font-thin bg-custom-900 text-white items-center justify-center overflow-hidden flex">
-                wpm cpm time-left restart hide/show {status}
+            <div className=" h-16 md:h-32 w-full shadow-xl align-middle  whitespace-nowrap font-thin bg-custom-900 text-white items-center justify-center overflow-hidden flex">
+                wpm cpm time-left restart hide/show
             </div>
 
         </div>
