@@ -38,7 +38,7 @@ const Navbar = () => {
                         </NavLink>
                     </li>
 
-                    <li className="self-center transition duration-300 ease-in-out hover:bg-opacity-20 hover:bg-green-400">
+                    <li className="self-center transition duration-300 ease-in-out hover:bg-opacity-20 hover:bg-emerald-400">
                         <NavLink to="/gameoflife" style={{ fontFamily: "Bebas Neue" }} className={`block tracking-wider ${(useLocation().pathname === "/gameoflife") ? "text-lime-500" : ""} hover:text-lime-500`}>
                             <div className="px-8 pt-5 pb-4 transition duration-500 text-2xl ease-in-out hover:scale-125 ">Game Of Life</div>
                         </NavLink>
