@@ -120,7 +120,7 @@ function Game() {
         <div className="flex  pt-28 lg:pt-0   h-full w-full relative items-center justify-center">
 
             {/*outline with gradient*/}
-            <div className="bg-gradient-to-tr   from-amber-400 via-red-400 to-lime-400 flex justify-center items-center relative outline-none" style={{ width: size.x + 5, height: size.y + 5 }}>
+            <div className="bg-gradient-to-tr   from-amber-400 via-red-400 to-rose-600 flex justify-center items-center relative outline-none" style={{ width: size.x + 5, height: size.y + 5 }}>
                 <div ref={focusContainer} tabIndex={-1} className="bg-custom-900 relative outline-none" style={{ width: size.x, height: size.y }}>
                     <div style={{ width: sx, height: sy }} className="absolute flex flex-col ">
                         {(new Array(sy / d)).fill(0).map((ting, i) => <div className={`${(i === (sy / d) - 1) ? "" : "border-b"} opacity-50 border-neutral-700 relative t-30`} key={i} style={{ width: sx, height: d }}></div>)}
