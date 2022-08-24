@@ -1,6 +1,7 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { QueryClient, useQuery } from "@tanstack/react-query"
 import data from './data.js' 
+import TypeRacerModal from './TypeRacerModal'
 
 const getRandomWords = () => {
     let small = (new Array(884)).fill(0).map( (_,i) => i )
@@ -10,7 +11,7 @@ const getRandomWords = () => {
 
     let howMany = 250
     while( howMany-- ){
-        if( Math.random() > 0.25 ){
+        if( Math.random() > 0.3 ){
             let which = Math.floor(Math.random() * small.length)
             result.push( data[ small[which] ] )
             result.push(" ")
@@ -50,13 +51,15 @@ const TypeRacer = () => {
 
     const focus = useRef(null)
 
-    useEffect(()=>{
-        let rand = getRandomWords() 
-        setWords( rand )
-        setCurrent( rand[0] )
-    },[])
+    const [time, setTime] = useState(61)
+    const run = useRef(false)
 
     const handleInput = (e) => {
+        if(!run.current){
+            run.current = true
+            timer()    
+        }
+        
         let newInput = e.target.value
 
         setInput(newInput)
@@ -79,17 +82,45 @@ const TypeRacer = () => {
         }
     }
 
-    const focusInput = () => {
-        focus.current.focus()
+    const timer = () => {
+        if(!run.current)return;
+
+        setTime(t => t - 1)
+        console.log((new Date()).getTime())
+
+        setTimeout(timer, 1000)
     }
 
-    // option to see stats once you start, reset button, try query random api, usecontext for navbar routes
-    //two INPUTS IN THE BACK???
+    const init = useCallback(() => {
+        let rand = getRandomWords()
+        setTime(61)
+        setWords( rand )
+        setCurrent( rand[0] )
+        setInput("")
+        which.current = {word:0,char:0}
+        run.current = false
+    },[])
+
+    useEffect(()=>{
+        init()
+    },[])
+
+    useEffect(()=>{
+        console.log(time)
+        if(time === 0){
+            run.current = false
+        }
+    },[time])
+
+    const wpm =  which.current.word % 2 === 1 ? (which.current.word+1)/2 : which.current.word/2
+    const cpm =  words.slice(0,which.current.word).reduce( (prev,cur)=> prev + ((cur === " ") ? 0 : cur.length), 0 ) + which.current.char
 
     return (
-        <div className="flex flex-col text-2xl md:text-5xl gap-4 md:gap-9 h-full w-full items-center justify-center">
+        <div className="flex flex-col h-full w-full items-center justify-evenly">
 
-            <div onClick={ () => focusInput() } className="font-thin text-white bg-custom-900 shadow-2xl h-16 md:h-32 w-full items-center justify-center flex " >
+            <TypeRacerModal show={time === 0} reset={init} data={time === 0 ? [wpm, cpm] : false} />
+
+            <div onClick={ () => focus.current.focus() } className="text-5xl font-thin text-white bg-custom-900 shadow-2xl h-8 sm:h-16 md:h-32 w-full items-center justify-center flex " >
 
                 <div  className="flex overflow-hidden">
 
@@ -120,8 +151,24 @@ const TypeRacer = () => {
 
             </div>
 
-            <div className=" h-16 md:h-32 w-full shadow-xl align-middle  whitespace-nowrap font-thin bg-custom-900 text-white items-center justify-center overflow-hidden flex">
-                wpm cpm time-left restart hide/show
+
+
+            <div className="align-middle text-3xl font-thin text-white items-center justify-center flex flex-row gap-10">
+                <div className="h-32 w-32 flex items-center justify-center bg-violet-700">
+                    wpm: { wpm }
+                </div>
+                <div className="h-32 w-32 flex items-center justify-center bg-violet-700">
+                    cpm: {cpm }
+                </div>  
+                <div className="h-32 w-32 flex items-center justify-center bg-violet-700">
+                    {time > 60 ? 60 : time}
+                </div>  
+                <div className="h-32 w-32 flex items-center justify-center bg-violet-700">
+                    <button onClick={init}>reset</button>
+                </div>  
+                <div className="h-32 w-32 flex items-center justify-center bg-violet-700">
+                    show
+                </div>    
             </div>
 
         </div>

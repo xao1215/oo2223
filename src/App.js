@@ -12,7 +12,8 @@ const queryClient = new QueryClient()
 
 function App() {
 
-    // do context for navbar link mapping ?  
+    // do context for navbar link mapping ?
+    // just put nav as fixed   
 
     return (
         <>

@@ -34,19 +34,19 @@ const Navbar = () => {
 
                     <li className="self-center transition duration-300 ease-in-out hover:bg-opacity-25 hover:bg-slate-600 ">
                         <NavLink to="/" style={{ fontFamily: "Bebas Neue" }} className={`block   tracking-wider ${(useLocation().pathname === "/") ? "text-amber-500" : ""} hover:text-amber-500`}>
-                            <p className="px-8 pt-5 pb-4 transition duration-500 ease-in-out text-2xl hover:scale-125 ">Snake</p>
+                            <p className="px-8 pt-5 pb-4 transition duration-500 ease-in-out text-3xl hover:scale-110 ">Snake</p>
                         </NavLink>
                     </li>
 
                     <li className="self-center transition duration-300 ease-in-out hover:bg-opacity-25 hover:bg-slate-600">
                         <NavLink to="/gameoflife" style={{ fontFamily: "Bebas Neue" }} className={`block tracking-wider ${(useLocation().pathname === "/gameoflife") ? "text-lime-500" : ""} hover:text-lime-500`}>
-                            <div className="px-8 pt-5 pb-4 transition duration-500 text-2xl ease-in-out hover:scale-125 ">Game Of Life</div>
+                            <div className="px-8 pt-5 pb-4 transition duration-500 text-3xl ease-in-out hover:scale-110 ">Game Of Life</div>
                         </NavLink>
                     </li>
 
                     <li className="self-center transition duration-300 ease-in-out hover:bg-opacity-25 hover:bg-slate-600">
                         <NavLink to="/typeracer" style={{ fontFamily: "Bebas Neue" }} className={`block   tracking-wider ${(useLocation().pathname === "/typeracer") ? "text-pink-600" : ""} hover:text-pink-600`}>
-                            <p className="px-8 pt-5 pb-4 transition duration-500 ease-in-out text-2xl hover:scale-125 ">TypeRacer</p>
+                            <p className="px-8 pt-5 pb-4 transition duration-500 ease-in-out text-3xl hover:scale-110 ">TypeRacer</p>
                         </NavLink>
                     </li>
 
