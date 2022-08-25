@@ -21,15 +21,15 @@ const Navbar = () => {
         }
     },[theme])
 
-    // bg-slate-400  + bg-slate-100 FOR LIGHT THEME PRIMARY?
+    // bg-slate-400  + bg-slate-100 bg-neutral-50 FOR LIGHT THEME PRIMARY?
 
     return (
 
-        <nav style={{ zIndex: 3333 }} className="relative flex justify-end sm:justify-center gap-0 w-full bg-neutral-50 dark:bg-custom-900">
+        <nav style={{ zIndex: 3333 }} className="relative flex justify-end md:justify-center gap-0 w-full bg-slate-300 dark:bg-custom-900">
 
             {/* <div className="self-center"></div> */}
 
-            <div className="content-center m-0 col-span-10 justify-center hidden sm:flex" id="navbar-default">
+            <div className="content-center m-0 col-span-10 justify-center hidden md:flex" id="navbar-default">
                 <ul className="flex flex-row mt-0 text-md text-gray-900 dark:text-gray-300 ">
 
                     <li className="self-center transition duration-300 ease-in-out hover:bg-opacity-25 hover:bg-slate-600 ">
@@ -62,7 +62,7 @@ const Navbar = () => {
                 </ul>
             </div>
 
-            <div className="sm:pr-3 rounded-full relative sm:absolute self-center flex sm:right-0 right-auto">
+            <div className="md:pr-3 rounded-full relative md:absolute self-center flex md:right-0 right-auto">
                 <button onClick={()=>{ setTheme(t => !t) }} id="theme" className="outline-none relative p-3 opacity-90 hover:bg-neutral-200 dark:hover:opacity-100 dark:hover:bg-custom-800 rounded-full">
                         <div className="p-px border-2 dark:text-neutral-50 dark:border-neutral-50 text-neutral-900 border-neutral-900 rounded-full">
                             { theme ? <GiSun className="h-4 w-4 rounded-full"/> : <HiMoon className="h-4 w-4 rounded-full"/> }

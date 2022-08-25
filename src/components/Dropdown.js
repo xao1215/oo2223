@@ -5,7 +5,7 @@ import { NavLink, useLocation } from 'react-router-dom'
 
 export default function Dropdown() {
     return (
-        <Menu as="div" className="relative self-center block sm:hidden text-left">
+        <Menu as="div" className="relative self-center block md:hidden text-left">
             <div className="py-3 pr-3">
                 <Menu.Button className="flex rounded-sm px-3 py-3 text-sm font-medium dark:text-neutral-200 text-neutral-900 dark:hover:text-neutral-50 dark:hover:bg-custom-800 hover:bg-neutral-200  focus:outline-none">
                     <HiMenu className="h-5 w-5" aria-hidden="true" />

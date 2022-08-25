@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { QueryClient, useQuery } from "@tanstack/react-query"
 import { HiOutlineRefresh } from "react-icons/hi"
-import { IoMdEye, RiEyeCloseLine } from 'react-icons/io'
+import { IoMdEye } from 'react-icons/io'
+import { RiEyeCloseLine } from 'react-icons/ri'
 import data from './data.js'
 import TypeRacerModal from './TypeRacerModal'
 
@@ -31,11 +32,11 @@ const getRandomWords = () => {
 const isSpace = (word, i, opacity) => {
     opacity = opacity < 10 ? 10 : opacity
     const style = "inline-block"
-    return (<div style={{ opacity: opacity / 100 }} key={i} className={style}> {word === " " ? <>&nbsp;</> : word} </div>)
+    return (<div style={{ opacity: opacity / 100 }} key={i} className={style}> {word === " " ? "\u00A0" : word} </div>)
 }
 
 const space = (word) => {
-    return (word === " " ? <>&nbsp;</> : word)
+    return (word === " " ? "\u00A0" : word)
 }
 
 async function fetchStuff() {
@@ -91,7 +92,7 @@ const TypeRacer = () => {
 
         setTime(t => t - 1)
 
-        setTimeout(timer, 250)
+        setTimeout(timer, 1000)
     }
 
     const init = useCallback(() => {
@@ -121,16 +122,12 @@ const TypeRacer = () => {
     const wpm = which.current.word % 2 === 1 ? (which.current.word + 1) / 2 : which.current.word / 2
     const cpm = words.slice(0, which.current.word).reduce((prev, cur) => prev + ((cur === " ") ? 0 : cur.length), 0) + which.current.char
 
-    const hide = useCallback(() => {
-        setShow(t => !t)
-    },[])
-
     return (
         <div className="flex flex-col gap-5 h-full w-full items-center justify-center">
 
             <TypeRacerModal show={time === 0} reset={init} data={time === 0 ? [wpm, cpm] : false} showOthers={setShow}/>
 
-            <div onClick={() => focus.current.focus()} className="text-5xl font-thin text-white bg-custom-900 shadow-2xl h-8 sm:h-16 md:h-32 w-full items-center justify-center flex " >
+            <div onClick={() => focus.current.focus()} className="text-5xl font-thin text-white bg-custom-900 shadow-2xl h-8 sm:h-16 lg:h-32 w-full items-center justify-center flex " >
 
                 <div className="flex overflow-hidden">
 
@@ -178,7 +175,9 @@ const Element = React.memo(({ text, data, extra }) => {
             <div className="block bg-purple-900 bg-opacity-0 w-full text-center pb-6">{text}</div>
             <div className="flex items-center justify-center text-center text-7xl h-20 text-violet-600 hover:text-rose-600">
                 { (typeof(data) === 'string') && <button onClick={extra} className="h-20"><HiOutlineRefresh className="h-10 w-10"/></button> }
-                { (typeof(data) === 'boolean') && <button onClick={() => extra(e => !e)}><IoMdEye className="h-10 w-10"/></button> }
+                { (typeof(data) === 'boolean') && <button onClick={() => extra(e => !e)}>
+                    { !data ? <RiEyeCloseLine className="h-12 w-12"/> : <IoMdEye className="h-12 w-12"/> }
+                </button> }
                 { typeof(data) === 'number' && (extra ? data : "-") }
             </div>
         </div>

@@ -25,7 +25,7 @@ const TypeRacerModal = memo(({ show, reset, data, showOthers }) => {
 						leaveFrom="opacity-100"
 						leaveTo="opacity-0"
 					>
-						<div className="fixed inset-0 bg-custom-blue bg-opacity-90"></div>
+						<div className="fixed inset-0 bg-custom-blue bg-opacity-75"></div>
 					</Transition.Child>
 
 					<div className="fixed inset-0 overflow-y-auto">
