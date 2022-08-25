@@ -2,11 +2,14 @@ import { Dialog, Transition } from '@headlessui/react'
 import { useEffect, useState } from 'react'
 import { Fragment, memo } from 'react'
 
-const TypeRacerModal = memo(({ show, reset, data }) => {
+const TypeRacerModal = memo(({ show, reset, data, showOthers }) => {
 	const [arr,setArr] = useState([0,0])
 
 	useEffect(()=>{
-		if(show)setArr(data)
+		if(show){
+			setArr(data);
+			showOthers(true);
+		}
 	},[show])
 
 	return (

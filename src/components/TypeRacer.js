@@ -56,6 +56,8 @@ const TypeRacer = () => {
     const [time, setTime] = useState(61)
     const run = useRef(false)
 
+    const [show, setShow] = useState(true)
+
     const handleInput = (e) => {
         if (!run.current) {
             run.current = true
@@ -89,7 +91,7 @@ const TypeRacer = () => {
 
         setTime(t => t - 1)
 
-        setTimeout(timer, 1000)
+        setTimeout(timer, 250)
     }
 
     const init = useCallback(() => {
@@ -98,6 +100,7 @@ const TypeRacer = () => {
         setWords(rand)
         setCurrent(rand[0])
         setInput("")
+        setShow(true)
         which.current = { word: 0, char: 0 }
         run.current = false
         // focus.current.focus()
@@ -119,13 +122,13 @@ const TypeRacer = () => {
     const cpm = words.slice(0, which.current.word).reduce((prev, cur) => prev + ((cur === " ") ? 0 : cur.length), 0) + which.current.char
 
     const hide = useCallback(() => {
-        console.log("hide")
+        setShow(t => !t)
     },[])
 
     return (
         <div className="flex flex-col gap-5 h-full w-full items-center justify-center">
 
-            <TypeRacerModal show={time === 0} reset={init} data={time === 0 ? [wpm, cpm] : false} />
+            <TypeRacerModal show={time === 0} reset={init} data={time === 0 ? [wpm, cpm] : false} showOthers={setShow}/>
 
             <div onClick={() => focus.current.focus()} className="text-5xl font-thin text-white bg-custom-900 shadow-2xl h-8 sm:h-16 md:h-32 w-full items-center justify-center flex " >
 
@@ -160,46 +163,23 @@ const TypeRacer = () => {
 
             <div className="align-middle text-3xl font-thin text-white items-center justify-center flex flex-row gap-5">
 
-                {[["wpm", wpm, null], ["cpm", cpm, null], ["time left", (time > 60 ? 60 : time), null], ["reset", "r", init], ["hide", "h", hide]].map(el => <Element text={el[0]} data={el[1]} extra={el[2]}/>
+                {[["wpm", wpm, show], ["cpm", cpm, show], ["time left", (time > 60 ? 60 : time), show], ["reset", "xd", init], ["hide", show, setShow]].map(el => <Element text={el[0]} data={el[1]} extra={el[2]}/>
                 )}
 
-                {/* <div className="flex flex-col justify-center items-center bg-custom-900">
-                    <div className="bg-red-900 px-5 py-2">wpm</div>
-                    <div className=" py-4 text-7xl text-transparent bg-clip-text bg-gradient-to-tr from-purple-400 to-violet-600">{wpm}</div>
-                </div> */}
-                {/*                 
-                <div className="h-32 w-32 flex items-center justify-center bg-violet-700">
-                    wpm: { wpm }
-                </div>
-                <div className="h-32 w-32 flex items-center justify-center bg-violet-700">
-                    cpm: {cpm }
-                </div>  
-                <div className="h-32 w-32 flex items-center justify-center bg-violet-700">
-                    {time > 60 ? 60 : time}
-                </div>  
-                <div className="h-32 w-32 flex items-center justify-center bg-violet-700">
-                    <button onClick={init}>reset</button>
-                </div>  
-                <div className="h-32 w-32 flex items-center justify-center bg-violet-700">
-                    show
-                </div>     */}
             </div>
 
         </div>
     )
 }
 
-const Element = React.memo(({ text, data, extra:onclick }) => {
-    console.log("render")
-
+const Element = React.memo(({ text, data, extra }) => {
     return (
         <div className="w-36 h-44 pt-2 justify-center shadow-lg items-center rounded-md pb-7 bg-custom-900">
-            <div className="block bg-purple-900 bg-opacity-0 w-full text-center pb-7">{text}</div>
+            <div className="block bg-purple-900 bg-opacity-0 w-full text-center pb-6">{text}</div>
             <div className="flex items-center justify-center text-center text-7xl h-20 text-violet-600 hover:text-rose-600">
-                { (data === "r") && <button onClick={onclick} className="h-20"><HiOutlineRefresh className="h-10 w-10"/></button> }
-                { (data === "h") && <button onClick={onclick}><IoMdEye className="h-10 w-10"/></button> }
-                { !(data === "r" || data === "h") && data }
-
+                { (typeof(data) === 'string') && <button onClick={extra} className="h-20"><HiOutlineRefresh className="h-10 w-10"/></button> }
+                { (typeof(data) === 'boolean') && <button onClick={() => extra(e => !e)}><IoMdEye className="h-10 w-10"/></button> }
+                { typeof(data) === 'number' && (extra ? data : "-") }
             </div>
         </div>
     )
