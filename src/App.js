@@ -12,9 +12,6 @@ const queryClient = new QueryClient()
 
 function App() {
 
-    // do context for navbar link mapping ?
-    // just put nav as fixed   
-
     return (
         <>
             <QueryClientProvider client={queryClient}>
@@ -25,7 +22,6 @@ function App() {
                         <Route element={<><Navbar/><GameOfLife/></>} path="/gameoflife"/>
                         <Route element={<><Navbar/><TypeRacer/></>} path="/typeracer"/>
 
-                        {/* tetris, weather, avoiding obstacles top and bottom rand generated, typeracer */}
                     </Routes>
                 </BrowserRouter>
             </QueryClientProvider>

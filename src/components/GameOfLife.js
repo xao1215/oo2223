@@ -130,9 +130,9 @@ const GameOfLife = () => {
     return (
         <div ref={sizeContainer} className="flex h-full w-full relative items-center justify-center">
 
-            <div style={{ width: size.width + 3, height: size.height + 3 }} className="relative items-center justify-center bg-gradient-to-br from-amber-300 via-emerald-500 to-lime-400">
+            <div style={{ width: size.width + 3, height: size.height + 3 }} className="relative items-center justify-center bg-black dark:bg-gradient-to-br from-amber-300 via-emerald-500 to-lime-400">
 
-                <div style={{ width: size.width, height: size.height, left: 1.5, top: 1.5 }} className="absolute flex content-start flex-wrap bg-custom-900">
+                <div style={{ width: size.width, height: size.height, left: 1.5, top: 1.5 }} className="absolute flex content-start flex-wrap bg-slate-300 dark:bg-custom-900">
 
                     {/* controls */}
                     <div className="absolute pl-2.5 pb-2.5 right-0 flex flex-col xs:flex-row origin-top-right transition delay-700 hover:delay-0 duration-150 hover:scale-150">
@@ -187,7 +187,7 @@ const GameOfLife = () => {
 const Pixel = memo(({i,j,num,omo,omc}) => {
     return <button
         style={{ height: pixelSize, width: pixelSize }}
-        className={` ${(num === 0) ? "bg-custom-900" : "bg-slate-200"} hover:bg-neutral-500 `}
+        className={` ${(num === 0) ? "bg-slate-300 dark:bg-custom-900" : "bg-custom-900 dark:bg-slate-200"} hover:bg-neutral-500 `}
         onClick={() => {
             omc(i,j)
         }}

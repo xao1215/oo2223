@@ -127,7 +127,7 @@ const TypeRacer = () => {
 
             <TypeRacerModal show={time === 0} reset={init} data={time === 0 ? [wpm, cpm] : false} showOthers={setShow}/>
 
-            <div onClick={() => focus.current.focus()} className="text-5xl font-thin text-white bg-custom-900 shadow-2xl h-8 sm:h-16 lg:h-32 w-full items-center justify-center flex " >
+            <div onClick={() => focus.current.focus()} className="text-xl lg:text-5xl font-thin text-black dark:text-white bg-slate-300 dark:bg-custom-900 drop-shadow-custom-b h-16 lg:h-32 w-full items-center justify-center flex " >
 
                 <div className="flex overflow-hidden">
 
@@ -140,7 +140,7 @@ const TypeRacer = () => {
                             <p className="inline-block bg-red-500 text-transparent ">{[...input].map((w, i) => i >= which.current.char ? space(w) : "")}</p>
 
                         </div>
-                        <input onKeyDown={(e) => /^[^a-z\s]+$/.test(e.key) && e.preventDefault()} ref={focus} autoFocus={true} value={input} onChange={handleInput} spellCheck="false" className="text-right w-full absolute  whitespace-nowrap m-0 right-1/2 bg-transparent outline-none text-white ">
+                        <input onKeyDown={(e) => /^[^a-z\s]+$/.test(e.key) && e.preventDefault()} ref={focus} autoFocus={true} value={input} onChange={handleInput} spellCheck="false" className="text-right w-full absolute  whitespace-nowrap m-0 right-1/2 bg-transparent outline-none text-black dark:text-white ">
                         </input>
                     </div>
 
@@ -152,13 +152,12 @@ const TypeRacer = () => {
 
                         </div>
                     </div>
-                    {/* <div className="absolute w-96 h-1/2 bg-red-500"></div> */}
 
                 </div>
 
             </div>
 
-            <div className="align-middle text-3xl font-thin text-white items-center justify-center flex flex-row gap-5">
+            <div className="align-middle text-lg lg:text-3xl font-thin text-black dark:text-white items-center justify-center flex flex-row gap-5">
 
                 {[["wpm", wpm, show], ["cpm", cpm, show], ["time left", (time > 60 ? 60 : time), show], ["reset", "xd", init], ["hide", show, setShow]].map(el => <Element text={el[0]} data={el[1]} extra={el[2]}/>
                 )}
@@ -171,12 +170,12 @@ const TypeRacer = () => {
 
 const Element = React.memo(({ text, data, extra }) => {
     return (
-        <div className="w-36 h-44 pt-2 justify-center shadow-lg items-center rounded-md pb-7 bg-custom-900">
+        <div className="w-24 lg:w-36 h-28 lg:h-44 pt-2 justify-center drop-shadow-custom items-center rounded-md pb-7 bg-slate-300 dark:bg-custom-900">
             <div className="block bg-purple-900 bg-opacity-0 w-full text-center pb-6">{text}</div>
-            <div className="flex items-center justify-center text-center text-7xl h-20 text-violet-600 hover:text-rose-600">
-                { (typeof(data) === 'string') && <button onClick={extra} className="h-20"><HiOutlineRefresh className="h-10 w-10"/></button> }
+            <div className="flex items-center justify-center text-center text-4xl lg:text-7xl h-6 lg:h-20 text-violet-600 hover:text-rose-600">
+                { (typeof(data) === 'string') && <button onClick={extra} className="h-6 lg:h-20"><HiOutlineRefresh className="w-5 h-5 lg:h-10 lg:w-10"/></button> }
                 { (typeof(data) === 'boolean') && <button onClick={() => extra(e => !e)}>
-                    { !data ? <RiEyeCloseLine className="h-12 w-12"/> : <IoMdEye className="h-12 w-12"/> }
+                    { !data ? <RiEyeCloseLine className="h-6 w-6 lg:h-12 lg:w-12"/> : <IoMdEye className="h-6 w-6 lg:h-12 lg:w-12"/> }
                 </button> }
                 { typeof(data) === 'number' && (extra ? data : "-") }
             </div>

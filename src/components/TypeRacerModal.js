@@ -25,7 +25,7 @@ const TypeRacerModal = memo(({ show, reset, data, showOthers }) => {
 						leaveFrom="opacity-100"
 						leaveTo="opacity-0"
 					>
-						<div className="fixed inset-0 bg-custom-blue bg-opacity-75"></div>
+						<div className="fixed inset-0 bg-custom-blue bg-opacity-90"></div>
 					</Transition.Child>
 
 					<div className="fixed inset-0 overflow-y-auto">
@@ -40,7 +40,7 @@ const TypeRacerModal = memo(({ show, reset, data, showOthers }) => {
 								leaveTo="opacity-0 scale-100"
 							>
 
-								<Dialog.Panel className="w-full max-w-md border-black border-opacity-20 border-4 transform overflow-hidden rounded-md dark:bg-custom-900 bg-white p-6 text-center transition-all">
+								<Dialog.Panel className="w-1/2 border-black border-opacity-20 border-4 transform overflow-hidden rounded-md dark:bg-custom-900 bg-white p-6 text-center transition-all">
 
 									<Dialog.Title as="h3" className="text-lg font-medium leading-6 text-purple-600">
 										Time's up!
